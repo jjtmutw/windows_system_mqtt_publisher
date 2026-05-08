@@ -1169,6 +1169,44 @@
   </main>
 
   <script>
+    async function enterFullscreen() {
+      const root = document.documentElement;
+      try {
+        if (document.fullscreenElement) return true;
+        if (root.requestFullscreen) {
+          await root.requestFullscreen({ navigationUI: "hide" });
+          return true;
+        }
+        if (root.webkitRequestFullscreen) {
+          root.webkitRequestFullscreen();
+          return true;
+        }
+      } catch (error) {
+        return false;
+      }
+      return false;
+    }
+
+    function enableFullscreenFallback() {
+      const activate = async () => {
+        if (await enterFullscreen()) {
+          window.removeEventListener("pointerdown", activate);
+          window.removeEventListener("touchstart", activate);
+          window.removeEventListener("click", activate);
+        }
+      };
+
+      window.addEventListener("pointerdown", activate, { passive: true });
+      window.addEventListener("touchstart", activate, { passive: true });
+      window.addEventListener("click", activate);
+    }
+
+    window.addEventListener("load", async () => {
+      if (!(await enterFullscreen())) {
+        enableFullscreenFallback();
+      }
+    });
+
     function syncLayoutMode() {
       document.body.classList.toggle("landscape-mode", window.innerWidth > window.innerHeight);
     }
