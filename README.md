@@ -28,6 +28,28 @@ $env:MQTT_HOST="broker.emqx.io"
 python app.py
 ```
 
+## 開機自動執行
+
+專案提供 `start_on_boot.bat`，會啟動：
+
+- LibreHardwareMonitor：如果 `C:\tmp\LibreHardwareMonitor-v0.9.4\LibreHardwareMonitor.exe` 存在
+- MQTT publisher：`app.py`
+- 手機 Dashboard HTTP server：`http://<電腦IP>:8088/mobile_dashboard.html`
+
+手動測試：
+
+```powershell
+.\start_on_boot.bat
+```
+
+加入 Windows 開機啟動：
+
+1. 按 `Win + R`
+2. 輸入 `shell:startup`
+3. 將 `start_on_boot.bat` 建立捷徑放進該資料夾
+
+CPU 溫度若要穩定讀取，建議改用 Windows 工作排程器執行此 bat，並勾選 `以最高權限執行`。
+
 預設會 publish 到：
 
 ```text
@@ -55,6 +77,15 @@ python -m http.server 8088
 ```text
 http://<電腦IP>:8088/mobile_dashboard.html
 ```
+
+### 手機全螢幕無地址列
+
+一般手機瀏覽器分頁不能被網頁強制隱藏地址列。若要真正無地址列顯示，請用 PWA/主畫面模式開啟：
+
+- Android Chrome/Edge：開啟 dashboard 後，選單選 `加入主畫面` 或 `安裝應用程式`，之後從主畫面圖示開啟。
+- iPhone Safari：開啟 dashboard 後，分享按鈕選 `加入主畫面`，之後從主畫面圖示開啟。
+
+此專案已包含 `manifest.webmanifest`，以 `fullscreen` + `landscape` 模式啟動。
 
 ## 環境變數
 

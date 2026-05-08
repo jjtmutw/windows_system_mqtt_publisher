@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050607">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="System Core">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
   <title>Windows System MQTT Dashboard</title>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
@@ -1187,6 +1194,19 @@
       return false;
     }
 
+    function isStandaloneDisplay() {
+      return window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: fullscreen)").matches ||
+        window.navigator.standalone === true;
+    }
+
+    function nudgeMobileAddressBar() {
+      if (isStandaloneDisplay()) return;
+      if (window.innerWidth > window.innerHeight) return;
+      setTimeout(() => window.scrollTo(0, 1), 250);
+      setTimeout(() => window.scrollTo(0, 1), 900);
+    }
+
     function enableFullscreenFallback() {
       const activate = async () => {
         if (await enterFullscreen()) {
@@ -1205,7 +1225,10 @@
       if (!(await enterFullscreen())) {
         enableFullscreenFallback();
       }
+      nudgeMobileAddressBar();
     });
+
+    window.addEventListener("orientationchange", nudgeMobileAddressBar);
 
     function syncLayoutMode() {
       document.body.classList.toggle("landscape-mode", window.innerWidth > window.innerHeight);

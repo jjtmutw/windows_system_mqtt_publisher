@@ -1,0 +1,19 @@
+{
+  "name": "Windows System MQTT Dashboard",
+  "short_name": "System Core",
+  "description": "Dark high-tech MQTT dashboard for Windows system telemetry.",
+  "start_url": "./mobile_dashboard.html?display=standalone",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#050607",
+  "theme_color": "#050607",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

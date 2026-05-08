@@ -9,6 +9,7 @@ import socket
 import subprocess
 import time
 from typing import Any
+import uuid
 
 import paho.mqtt.client as mqtt
 import psutil
@@ -21,7 +22,7 @@ MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", "")
 MQTT_TOPIC = os.getenv("MQTT_TOPIC", "jj/windows/system/status")
 MQTT_CLIENT_ID = os.getenv(
     "MQTT_CLIENT_ID",
-    f"windows-system-monitor-{socket.gethostname().replace(' ', '-').replace('_', '-')}",
+    f"windows-system-monitor-{socket.gethostname().replace(' ', '-').replace('_', '-')}-{os.getpid()}-{uuid.uuid4().hex[:8]}",
 )
 MQTT_QOS = int(os.getenv("MQTT_QOS", "0"))
 MQTT_RETAIN = os.getenv("MQTT_RETAIN", "false").strip().lower() in {"1", "true", "yes", "on"}
@@ -305,6 +306,11 @@ def publish_loop(client: mqtt.Client) -> None:
     previous_time = time.monotonic()
 
     while True:
+        if not client.is_connected():
+            LOGGER.warning("MQTT is not connected; waiting before publishing")
+            time.sleep(PUBLISH_INTERVAL_SECONDS)
+            continue
+
         now = time.monotonic()
         elapsed_seconds = max(0.001, now - previous_time)
         payload, previous_network, previous_disk_io = build_payload(
@@ -334,6 +340,8 @@ def publish_loop(client: mqtt.Client) -> None:
 def main() -> None:
     LOGGER.info("Connecting to MQTT broker %s:%s", MQTT_HOST, MQTT_PORT)
     LOGGER.info("Publishing topic: %s", MQTT_TOPIC)
+    LOGGER.info("MQTT client id: %s", MQTT_CLIENT_ID)
+    LOGGER.info("MQTT authentication: %s", "username/password" if MQTT_USERNAME else "anonymous")
 
     client = build_client()
     try:
