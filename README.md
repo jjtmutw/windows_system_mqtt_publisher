@@ -87,6 +87,14 @@ http://<電腦IP>:8088/mobile_dashboard.html
 
 此專案已包含 `manifest.webmanifest`，以 `fullscreen` + `landscape` 模式啟動。
 
+### 多電腦顯示
+
+Dashboard 的第 1 頁是設定頁，可輸入要顯示的 `computer_name`，每行一台電腦。按 `Save Pages` 後，後續每一頁會各自顯示一台電腦的狀態。
+
+- 手機上下滑動：切換上一台 / 下一台電腦
+- 第 1 頁 `Detected Computers`：收到 MQTT payload 後會列出偵測到的電腦，點一下可加入顯示清單
+- 設定會保存在手機瀏覽器的 `localStorage`
+
 ## 環境變數
 
 - `MQTT_HOST`: MQTT broker host，預設 `broker.emqx.io`

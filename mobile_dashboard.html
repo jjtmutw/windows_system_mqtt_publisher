@@ -17,15 +17,14 @@
     :root {
       color-scheme: dark;
       --bg: #050607;
-      --panel: rgba(14, 16, 18, 0.86);
-      --panel-strong: rgba(22, 23, 24, 0.94);
-      --line: rgba(255, 255, 255, 0.18);
-      --line-hot: rgba(255, 188, 64, 0.78);
-      --text: #f5f7f8;
-      --muted: #8e969c;
-      --subtle: #566069;
+      --panel: rgba(13, 15, 17, 0.88);
+      --panel-strong: rgba(20, 23, 25, 0.96);
+      --line: rgba(255, 255, 255, 0.16);
+      --line-hot: rgba(255, 182, 41, 0.78);
+      --text: #f6f8f8;
+      --muted: #8d969d;
+      --subtle: #5a646d;
       --amber: #ffb629;
-      --amber-2: #ff7c1f;
       --cyan: #66efff;
       --green: #4ef2a4;
       --red: #ff5364;
@@ -37,16 +36,17 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
-      min-height: 100svh;
+      height: 100%;
       margin: 0;
       color: var(--text);
       background:
-        radial-gradient(circle at 50% 10%, rgba(255, 182, 41, 0.12), transparent 34%),
-        radial-gradient(circle at 100% 0%, rgba(102, 239, 255, 0.08), transparent 28%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%) 0 0 / 9px 9px,
+        radial-gradient(circle at 50% 12%, rgba(255, 182, 41, 0.13), transparent 34%),
+        radial-gradient(circle at 100% 0%, rgba(102, 239, 255, 0.08), transparent 30%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%) 0 0 / 9px 9px,
         var(--bg);
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     body::before {
@@ -57,14 +57,42 @@
       background:
         linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 100% 42px,
         linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 42px 100%;
-      mask-image: linear-gradient(to bottom, black, transparent 74%);
+      mask-image: linear-gradient(to bottom, black, transparent 76%);
     }
 
-    .app {
-      width: min(100%, 460px);
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .snap {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .page {
+      width: 100vw;
       min-height: 100svh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    }
+
+    .page-shell {
+      width: min(100%, 1120px);
+      height: calc(100svh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
       margin: 0 auto;
-      padding: max(14px, env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-rows: 36px minmax(0, 1fr) 16px;
+      gap: 8px;
     }
 
     .topbar {
@@ -72,48 +100,44 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .brand {
       min-width: 0;
     }
 
-    h1 {
+    h1,
+    h2,
+    p {
       margin: 0;
-      font-size: 18px;
+    }
+
+    h1 {
+      font-size: 15px;
       line-height: 1.05;
+      font-weight: 850;
       letter-spacing: 0;
-      font-weight: 800;
       text-transform: uppercase;
     }
 
-    .host {
-      margin-top: 4px;
+    .subline {
+      margin-top: 2px;
       color: var(--muted);
-      font-size: 11px;
-      line-height: 1.3;
+      font-size: 10px;
+      line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .layoutMark {
-      display: none;
-      color: var(--amber);
-    }
-
     .status {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      min-width: 88px;
       justify-content: center;
-      padding: 8px 10px;
+      gap: 7px;
+      min-width: 82px;
+      padding: 6px 8px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.035);
-      font-size: 11px;
+      background: rgba(255, 255, 255, 0.04);
       color: var(--muted);
+      font-size: 10px;
       text-transform: uppercase;
     }
 
@@ -122,8 +146,8 @@
       height: 8px;
       border-radius: 50%;
       background: var(--red);
-      box-shadow: 0 0 12px currentColor;
       color: var(--red);
+      box-shadow: 0 0 12px currentColor;
     }
 
     .status.online {
@@ -136,14 +160,174 @@
       color: var(--green);
     }
 
+    .setup-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.92fr) 1.08fr;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .panel {
+      position: relative;
+      min-height: 0;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 6px),
+        var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      border-top: 1px solid var(--line-hot);
+      border-right: 1px solid var(--line-hot);
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .panel-title span {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: none;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.055);
+      outline: none;
+    }
+
+    input {
+      min-height: 31px;
+      padding: 6px 8px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    textarea {
+      min-height: 104px;
+      resize: none;
+      padding: 8px;
+      line-height: 1.35;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(255, 182, 41, 0.72);
+      box-shadow: 0 0 0 2px rgba(255, 182, 41, 0.12);
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      min-height: 31px;
+      border: 1px solid rgba(255, 182, 41, 0.55);
+      border-radius: 0;
+      color: #120b02;
+      background: linear-gradient(180deg, #ffd26f, #ff9f1f);
+      font-size: 9px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    button.secondary {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .chip-grid {
+      display: flex;
+      align-content: flex-start;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-height: 100%;
+      overflow: auto;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      padding: 7px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip.live {
+      color: var(--green);
+      border-color: rgba(78, 242, 164, 0.32);
+    }
+
+    .chip.configured {
+      color: var(--amber);
+      border-color: rgba(255, 182, 41, 0.38);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 34vw) 1fr;
+      gap: 9px;
+      min-height: 0;
+    }
+
     .hero {
       position: relative;
-      min-height: 318px;
+      min-height: 0;
+      height: 100%;
       border: 1px solid rgba(255, 255, 255, 0.16);
       background:
         linear-gradient(150deg, rgba(255, 255, 255, 0.08), transparent 28%),
         linear-gradient(315deg, rgba(255, 182, 41, 0.11), transparent 38%),
-        var(--panel);
+        var(--panel-strong);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
@@ -152,30 +336,32 @@
     .hero::after {
       content: "";
       position: absolute;
-      inset: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
       pointer-events: none;
+    }
+
+    .hero::before {
+      inset: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .hero::after {
       inset: auto 0 0;
-      height: 46%;
-      border: 0;
-      background: linear-gradient(to top, rgba(5, 6, 7, 0.82), transparent);
+      height: 44%;
+      background: linear-gradient(to top, rgba(5, 6, 7, 0.86), transparent);
     }
 
     .gauge-wrap {
       position: relative;
+      z-index: 1;
       display: grid;
       place-items: center;
-      min-height: 236px;
-      padding-top: 16px;
-      z-index: 1;
+      height: calc(100% - 84px);
+      padding-top: 5px;
     }
 
     .gauge {
       --cpu: 0;
-      width: min(72vw, 268px);
+      width: min(28vw, calc(100svh - 120px), 212px);
       aspect-ratio: 1;
       position: relative;
       display: grid;
@@ -226,26 +412,26 @@
     }
 
     .cpu-value {
-      font-size: 34px;
+      font-size: 27px;
       line-height: 1;
-      font-weight: 800;
+      font-weight: 850;
       font-variant-numeric: tabular-nums;
     }
 
     .cpu-label {
-      margin-top: 4px;
+      margin-top: 3px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
       text-transform: uppercase;
     }
 
     .temp-module {
       position: absolute;
-      right: 14px;
-      bottom: 70px;
+      right: 9px;
+      bottom: 58px;
       z-index: 2;
-      min-width: 142px;
-      padding: 9px 10px;
+      min-width: 108px;
+      padding: 7px 8px;
       border: 1px solid var(--line);
       background: rgba(5, 6, 7, 0.78);
       clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
@@ -253,7 +439,7 @@
 
     .temp-title {
       color: var(--muted);
-      font-size: 10px;
+      font-size: 8px;
       text-transform: uppercase;
     }
 
@@ -262,35 +448,36 @@
       display: flex;
       align-items: baseline;
       gap: 3px;
-      font-size: 34px;
+      font-size: 25px;
       line-height: 1;
-      font-weight: 800;
+      font-weight: 850;
       font-variant-numeric: tabular-nums;
     }
 
     .temp-value span {
-      font-size: 17px;
       color: var(--amber);
+      font-size: 13px;
     }
 
     .quick-stats {
       position: relative;
       z-index: 2;
       display: grid;
-      gap: 10px;
-      padding: 0 14px 14px;
+      gap: 6px;
+      padding: 0 10px 9px;
     }
 
     .bar-row {
       display: grid;
-      grid-template-columns: 72px 1fr 42px;
-      gap: 9px;
+      grid-template-columns: 58px 1fr 34px;
       align-items: center;
-      font-size: 11px;
+      gap: 7px;
       color: var(--muted);
+      font-size: 9px;
     }
 
     .bar {
+      --value: 0%;
       height: 3px;
       background:
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.55) 0 1px, transparent 1px 5px),
@@ -299,145 +486,57 @@
     }
 
     .value-right {
-      text-align: right;
       color: var(--text);
+      text-align: right;
       font-variant-numeric: tabular-nums;
     }
 
-    .controls {
+    .metrics-grid {
       display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
       gap: 8px;
-      margin: 12px 0;
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.34);
-    }
-
-    label {
-      display: grid;
-      gap: 5px;
-      color: var(--muted);
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    input {
-      width: 100%;
-      min-height: 36px;
-      padding: 8px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 0;
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.055);
-      font: 600 12px/1.2 "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: rgba(255, 182, 41, 0.7);
-      box-shadow: 0 0 0 2px rgba(255, 182, 41, 0.12);
-    }
-
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    button {
-      min-height: 36px;
-      border: 1px solid rgba(255, 182, 41, 0.55);
-      border-radius: 0;
-      color: #120b02;
-      background: linear-gradient(180deg, #ffd26f, #ff9f1f);
-      font: 800 11px/1 "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0;
-    }
-
-    button.secondary {
-      color: var(--text);
-      border-color: rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .panel {
-      position: relative;
-      padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%),
-        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 6px),
-        var(--panel);
+      min-height: 0;
       overflow: hidden;
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 28px;
-      height: 28px;
-      border-top: 1px solid var(--line-hot);
-      border-right: 1px solid var(--line-hot);
-    }
-
-    .panel-title {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 11px;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .panel-title span {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: none;
     }
 
     .metric-row {
       display: flex;
       justify-content: space-between;
       gap: 10px;
-      padding: 7px 0;
+      padding: 5px 0;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--muted);
-      font-size: 12px;
+      font-size: 9px;
     }
 
     .metric-row strong {
+      max-width: 58%;
+      overflow: hidden;
       color: var(--text);
-      font-size: 13px;
+      font-size: 10px;
       font-variant-numeric: tabular-nums;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .duo {
+    .duo,
+    .net-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 7px;
     }
 
     .ring {
       --pct: 0;
       display: grid;
       place-items: center;
-      min-height: 116px;
+      min-height: 78px;
       text-align: center;
     }
 
     .ring-face {
-      width: 88px;
+      width: min(58px, 11vw);
       aspect-ratio: 1;
       display: grid;
       place-items: center;
@@ -451,586 +550,75 @@
 
     .ring strong {
       display: block;
-      font-size: 18px;
+      font-size: 13px;
       font-variant-numeric: tabular-nums;
     }
 
     .ring span {
       display: block;
-      margin-top: 8px;
+      margin-top: 5px;
       color: var(--muted);
-      font-size: 11px;
-    }
-
-    .net-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      font-size: 9px;
     }
 
     .net-cell {
-      min-height: 82px;
-      padding: 10px;
+      min-height: 58px;
+      padding: 7px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(0, 0, 0, 0.24);
     }
 
     .net-cell .label {
       color: var(--muted);
-      font-size: 10px;
+      font-size: 8px;
       text-transform: uppercase;
     }
 
     .net-cell .number {
-      margin-top: 10px;
-      font-size: 24px;
-      font-weight: 800;
+      margin-top: 5px;
+      font-size: 18px;
+      font-weight: 850;
       font-variant-numeric: tabular-nums;
     }
 
     .net-cell .unit {
       color: var(--cyan);
-      font-size: 11px;
+      font-size: 9px;
+    }
+
+    .sparkline {
+      width: 100%;
+      height: 24px;
+      display: block;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .disk-list {
       display: grid;
-      gap: 9px;
+      gap: 6px;
     }
 
     .disk {
       display: grid;
-      gap: 7px;
+      gap: 5px;
     }
 
     .disk-head {
       display: flex;
       justify-content: space-between;
+      gap: 8px;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 9px;
     }
 
     .disk-head strong {
       color: var(--text);
     }
 
-    .sparkline {
-      width: 100%;
-      height: 34px;
-      display: block;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .log {
-      margin: 12px 0 0;
+    .footer-line {
+      min-width: 0;
       color: var(--subtle);
-      font-size: 10px;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    .empty {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    @media (min-width: 390px) {
-      .app {
-        padding-inline: 14px;
-      }
-
-      .hero {
-        min-height: 338px;
-      }
-
-      .gauge-wrap {
-        min-height: 252px;
-      }
-    }
-
-    @media (orientation: landscape) {
-      body {
-        overflow: hidden;
-      }
-
-      .app {
-        width: 100%;
-        max-width: none;
-        height: 100svh;
-        max-height: 100svh;
-        min-height: 0;
-        display: grid;
-        grid-template-columns: minmax(250px, 34vw) minmax(158px, 19vw) 1fr;
-        grid-template-rows: 36px minmax(0, 1fr) 14px;
-        grid-template-areas:
-          "top top top"
-          "hero controls metrics"
-          "log log log";
-        gap: 8px;
-        padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(7px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
-      }
-
-      .topbar {
-        grid-area: top;
-        margin: 0;
-      }
-
-      h1 {
-        font-size: 15px;
-      }
-
-      .host {
-        margin-top: 2px;
-        font-size: 10px;
-      }
-
-      .layoutMark {
-        display: inline;
-      }
-
-      .status {
-        min-width: 78px;
-        padding: 6px 8px;
-        font-size: 10px;
-      }
-
-      .hero {
-        grid-area: hero;
-        min-height: 0;
-        height: 100%;
-      }
-
-      .hero::before {
-        inset: 9px;
-      }
-
-      .gauge-wrap {
-        min-height: 0;
-        height: calc(100% - 86px);
-        padding-top: 5px;
-      }
-
-      .gauge {
-        width: min(28vw, calc(100svh - 120px), 210px);
-      }
-
-      .cpu-value {
-        font-size: 27px;
-      }
-
-      .cpu-label {
-        font-size: 9px;
-      }
-
-      .temp-module {
-        right: 9px;
-        bottom: 60px;
-        min-width: 108px;
-        padding: 7px 8px;
-      }
-
-      .temp-title {
-        font-size: 8px;
-      }
-
-      .temp-value {
-        font-size: 25px;
-      }
-
-      .temp-value span {
-        font-size: 13px;
-      }
-
-      .quick-stats {
-        gap: 6px;
-        padding: 0 10px 9px;
-      }
-
-      .bar-row {
-        grid-template-columns: 58px 1fr 34px;
-        gap: 7px;
-        font-size: 9px;
-      }
-
-      .controls {
-        grid-area: controls;
-        align-self: stretch;
-        margin: 0;
-        padding: 8px;
-        gap: 7px;
-        overflow: hidden;
-      }
-
-      label {
-        gap: 4px;
-        font-size: 8px;
-      }
-
-      input {
-        min-height: 29px;
-        padding: 6px 7px;
-        font-size: 10px;
-      }
-
-      .button-row {
-        gap: 7px;
-      }
-
-      button {
-        min-height: 30px;
-        font-size: 9px;
-      }
-
-      .grid {
-        grid-area: metrics;
-        min-height: 0;
-        height: 100%;
-        overflow: hidden;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .panel {
-        min-height: 0;
-        padding: 8px;
-      }
-
-      .panel-title {
-        margin-bottom: 7px;
-        font-size: 10px;
-      }
-
-      .panel-title span {
-        font-size: 8px;
-      }
-
-      .duo {
-        gap: 7px;
-      }
-
-      .ring {
-        min-height: 78px;
-      }
-
-      .ring-face {
-        width: min(58px, 11vw);
-      }
-
-      .ring strong {
-        font-size: 13px;
-      }
-
-      .ring span {
-        margin-top: 5px;
-        font-size: 9px;
-      }
-
-      .net-grid {
-        gap: 7px;
-      }
-
-      .net-cell {
-        min-height: 58px;
-        padding: 7px;
-      }
-
-      .net-cell .label {
-        font-size: 8px;
-      }
-
-      .net-cell .number {
-        margin-top: 5px;
-        font-size: 18px;
-      }
-
-      .net-cell .unit {
-        font-size: 9px;
-      }
-
-      .sparkline {
-        height: 24px;
-      }
-
-      .disk-list {
-        gap: 6px;
-      }
-
-      .disk {
-        gap: 5px;
-      }
-
-      .disk-head {
-        font-size: 9px;
-      }
-
-      .metric-row {
-        padding: 5px 0;
-        font-size: 9px;
-      }
-
-      .metric-row strong {
-        font-size: 10px;
-        max-width: 56%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .empty {
-        font-size: 10px;
-      }
-
-      .log {
-        grid-area: log;
-        margin: 0;
-        font-size: 9px;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-
-    body.landscape-mode {
-      overflow: hidden;
-    }
-
-    body.landscape-mode .app {
-      width: 100%;
-      max-width: none;
-      height: 100svh;
-      max-height: 100svh;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: minmax(250px, 34vw) minmax(158px, 19vw) 1fr;
-      grid-template-rows: 36px minmax(0, 1fr) 14px;
-      grid-template-areas:
-        "top top top"
-        "hero controls metrics"
-        "log log log";
-      gap: 8px;
-      padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(7px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
-    }
-
-    body.landscape-mode .topbar {
-      grid-area: top;
-      margin: 0;
-    }
-
-    body.landscape-mode h1 {
-      font-size: 15px;
-    }
-
-    body.landscape-mode .host {
-      margin-top: 2px;
-      font-size: 10px;
-    }
-
-    body.landscape-mode .layoutMark {
-      display: inline;
-    }
-
-    body.landscape-mode .status {
-      min-width: 78px;
-      padding: 6px 8px;
-      font-size: 10px;
-    }
-
-    body.landscape-mode .hero {
-      grid-area: hero;
-      min-height: 0;
-      height: 100%;
-    }
-
-    body.landscape-mode .hero::before {
-      inset: 9px;
-    }
-
-    body.landscape-mode .gauge-wrap {
-      min-height: 0;
-      height: calc(100% - 86px);
-      padding-top: 5px;
-    }
-
-    body.landscape-mode .gauge {
-      width: min(28vw, calc(100svh - 120px), 210px);
-    }
-
-    body.landscape-mode .cpu-value {
-      font-size: 27px;
-    }
-
-    body.landscape-mode .cpu-label {
-      font-size: 9px;
-    }
-
-    body.landscape-mode .temp-module {
-      right: 9px;
-      bottom: 60px;
-      min-width: 108px;
-      padding: 7px 8px;
-    }
-
-    body.landscape-mode .temp-title {
-      font-size: 8px;
-    }
-
-    body.landscape-mode .temp-value {
-      font-size: 25px;
-    }
-
-    body.landscape-mode .temp-value span {
-      font-size: 13px;
-    }
-
-    body.landscape-mode .quick-stats {
-      gap: 6px;
-      padding: 0 10px 9px;
-    }
-
-    body.landscape-mode .bar-row {
-      grid-template-columns: 58px 1fr 34px;
-      gap: 7px;
-      font-size: 9px;
-    }
-
-    body.landscape-mode .controls {
-      grid-area: controls;
-      align-self: stretch;
-      margin: 0;
-      padding: 8px;
-      gap: 7px;
-      overflow: hidden;
-    }
-
-    body.landscape-mode label {
-      gap: 4px;
-      font-size: 8px;
-    }
-
-    body.landscape-mode input {
-      min-height: 29px;
-      padding: 6px 7px;
-      font-size: 10px;
-    }
-
-    body.landscape-mode .button-row {
-      gap: 7px;
-    }
-
-    body.landscape-mode button {
-      min-height: 30px;
-      font-size: 9px;
-    }
-
-    body.landscape-mode .grid {
-      grid-area: metrics;
-      min-height: 0;
-      height: 100%;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    body.landscape-mode .panel {
-      min-height: 0;
-      padding: 8px;
-    }
-
-    body.landscape-mode .panel-title {
-      margin-bottom: 7px;
-      font-size: 10px;
-    }
-
-    body.landscape-mode .panel-title span {
-      font-size: 8px;
-    }
-
-    body.landscape-mode .duo {
-      gap: 7px;
-    }
-
-    body.landscape-mode .ring {
-      min-height: 78px;
-    }
-
-    body.landscape-mode .ring-face {
-      width: min(58px, 11vw);
-    }
-
-    body.landscape-mode .ring strong {
-      font-size: 13px;
-    }
-
-    body.landscape-mode .ring span {
-      margin-top: 5px;
-      font-size: 9px;
-    }
-
-    body.landscape-mode .net-grid {
-      gap: 7px;
-    }
-
-    body.landscape-mode .net-cell {
-      min-height: 58px;
-      padding: 7px;
-    }
-
-    body.landscape-mode .net-cell .label {
-      font-size: 8px;
-    }
-
-    body.landscape-mode .net-cell .number {
-      margin-top: 5px;
-      font-size: 18px;
-    }
-
-    body.landscape-mode .net-cell .unit {
-      font-size: 9px;
-    }
-
-    body.landscape-mode .sparkline {
-      height: 24px;
-    }
-
-    body.landscape-mode .disk-list {
-      gap: 6px;
-    }
-
-    body.landscape-mode .disk {
-      gap: 5px;
-    }
-
-    body.landscape-mode .disk-head {
-      font-size: 9px;
-    }
-
-    body.landscape-mode .metric-row {
-      padding: 5px 0;
-      font-size: 9px;
-    }
-
-    body.landscape-mode .metric-row strong {
-      font-size: 10px;
-      max-width: 56%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    body.landscape-mode .empty {
-      font-size: 10px;
-    }
-
-    body.landscape-mode .log {
-      grid-area: log;
-      margin: 0;
       font-size: 9px;
       line-height: 1.2;
       white-space: nowrap;
@@ -1038,144 +626,579 @@
       text-overflow: ellipsis;
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .gauge {
-        transition: background 450ms ease, filter 450ms ease;
+    .page-dots {
+      position: fixed;
+      right: max(7px, env(safe-area-inset-right));
+      top: 50%;
+      z-index: 3;
+      display: grid;
+      gap: 6px;
+      transform: translateY(-50%);
+    }
+
+    .page-dot {
+      width: 5px;
+      height: 18px;
+      min-height: 18px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .page-dot.active {
+      border-color: rgba(255, 182, 41, 0.82);
+      background: var(--amber);
+      box-shadow: 0 0 14px rgba(255, 182, 41, 0.48);
+    }
+
+    @media (orientation: portrait) {
+      .page {
+        padding: 12px;
       }
 
-      .bar,
+      .page-shell {
+        height: auto;
+        min-height: calc(100svh - 24px);
+        grid-template-rows: auto auto auto;
+      }
+
+      .setup-grid,
+      .content-grid,
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content-grid {
+        grid-template-rows: 330px auto;
+      }
+
+      .metrics-grid {
+        grid-template-rows: none;
+      }
+
       .ring-face {
-        transition: background 420ms ease;
-      }
-
-      .panel {
-        animation: panelIn 420ms ease both;
-      }
-
-      @keyframes panelIn {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        width: 76px;
       }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div class="brand">
-        <h1>System Core</h1>
-        <div class="host"><span id="computerName">等待 MQTT 資料</span><span class="layoutMark"> · LANDSCAPE HUD v2</span></div>
-      </div>
-      <div class="status" id="status"><span class="dot"></span><span id="statusText">Offline</span></div>
-    </header>
+  <main class="snap" id="snapRoot">
+    <section class="page setup-page" data-page="setup">
+      <div class="page-shell">
+        <header class="topbar">
+          <div>
+            <h1>System Core Fleet</h1>
+            <div class="subline">Page 1: configure computer_name list. Swipe down for each computer.</div>
+          </div>
+          <div class="status" id="status"><span class="dot"></span><span id="statusText">Offline</span></div>
+        </header>
 
-    <section class="hero" aria-label="CPU dashboard">
-      <div class="gauge-wrap">
-        <div class="gauge" id="cpuGauge">
-          <div class="gauge-center">
-            <div>
-              <div class="cpu-value" id="cpuValue">--</div>
-              <div class="cpu-label">CPU Load</div>
+        <div class="setup-grid">
+          <section class="panel">
+            <div class="panel-title">Display List <span id="configuredCount">0 computers</span></div>
+            <div class="form-stack">
+              <label>
+                MQTT WebSocket
+                <input id="brokerInput" value="wss://broker.emqx.io:8084/mqtt" autocomplete="off">
+              </label>
+              <label>
+                Topic
+                <input id="topicInput" value="jj/windows/system/status" autocomplete="off">
+              </label>
+              <label>
+                computer_name, one per line
+                <textarea id="computerInput" spellcheck="false" placeholder="DESKTOP-86TOS1M&#10;WORKSTATION-01"></textarea>
+              </label>
+              <div class="button-row">
+                <button id="saveButton">Save Pages</button>
+                <button class="secondary" id="connectButton">Connect</button>
+              </div>
+              <div class="button-row">
+                <button class="secondary" id="disconnectButton">Disconnect</button>
+                <button class="secondary" id="clearButton">Clear Data</button>
+              </div>
             </div>
-          </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">Detected Computers <span>tap to add</span></div>
+            <div class="chip-grid" id="detectedList"></div>
+          </section>
         </div>
-        <div class="temp-module">
-          <div class="temp-title">Temperature</div>
-          <div class="temp-value"><strong id="tempValue">--</strong><span>°C</span></div>
-        </div>
-      </div>
-      <div class="quick-stats">
-        <div class="bar-row">
-          <div>CPU 使用率</div>
-          <div class="bar" id="cpuBar"></div>
-          <div class="value-right" id="cpuMini">--%</div>
-        </div>
-        <div class="bar-row">
-          <div>記憶體</div>
-          <div class="bar" id="memBar"></div>
-          <div class="value-right" id="memMini">--%</div>
-        </div>
-        <div class="bar-row">
-          <div>硬碟 I/O</div>
-          <div class="bar" id="ioBar"></div>
-          <div class="value-right" id="ioMini">--</div>
-        </div>
+
+        <div class="footer-line" id="setupLog">Ready. Configure names, then connect MQTT.</div>
       </div>
     </section>
 
-    <section class="controls" aria-label="MQTT settings">
-      <label>
-        WebSocket
-        <input id="brokerInput" value="wss://broker.emqx.io:8084/mqtt" autocomplete="off">
-      </label>
-      <label>
-        Topic
-        <input id="topicInput" value="jj/windows/system/status" autocomplete="off">
-      </label>
-      <div class="button-row">
-        <button id="connectButton">Connect</button>
-        <button class="secondary" id="disconnectButton">Disconnect</button>
-      </div>
-    </section>
-
-    <section class="grid" aria-label="System metrics">
-      <div class="panel">
-        <div class="panel-title">Memory <span id="memBytes">--</span></div>
-        <div class="duo">
-          <div class="ring" id="ramRing">
-            <div class="ring-face"><strong id="ramPct">--%</strong></div>
-            <span>RAM</span>
-          </div>
-          <div class="ring" id="swapRing">
-            <div class="ring-face"><strong id="swapPct">--%</strong></div>
-            <span>Swap</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Network <span>Mbps</span></div>
-        <div class="net-grid">
-          <div class="net-cell">
-            <div class="label">Download</div>
-            <div class="number" id="downloadValue">--</div>
-            <div class="unit">Mb/s</div>
-          </div>
-          <div class="net-cell">
-            <div class="label">Upload</div>
-            <div class="number" id="uploadValue">--</div>
-            <div class="unit">Mb/s</div>
-          </div>
-        </div>
-        <svg class="sparkline" id="netSpark" viewBox="0 0 320 34" preserveAspectRatio="none" aria-hidden="true"></svg>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Disk Usage <span id="diskCount">--</span></div>
-        <div class="disk-list" id="diskList">
-          <div class="empty">等待硬碟資料。</div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Telemetry <span id="lastSeen">--</span></div>
-        <div class="metric-row"><span>CPU Cores</span><strong id="coresValue">--</strong></div>
-        <div class="metric-row"><span>OS</span><strong id="osValue">--</strong></div>
-        <div class="metric-row"><span>Temperature Source</span><strong id="tempSource">--</strong></div>
-      </div>
-    </section>
-
-    <p class="log" id="log">尚未連線。</p>
+    <div id="computerPages"></div>
   </main>
+  <nav class="page-dots" id="pageDots" aria-label="Page index"></nav>
 
   <script>
+    const STORAGE_KEY = "system-core-computers-v2";
+    const DEFAULT_NAMES = ["Preview Mode"];
+
+    const state = {
+      client: null,
+      connected: false,
+      configuredNames: loadConfiguredNames(),
+      latestByName: new Map(),
+      detectedNames: new Set(),
+      historyByName: new Map()
+    };
+
+    const els = {
+      snapRoot: document.querySelector("#snapRoot"),
+      computerPages: document.querySelector("#computerPages"),
+      pageDots: document.querySelector("#pageDots"),
+      status: document.querySelector("#status"),
+      statusText: document.querySelector("#statusText"),
+      setupLog: document.querySelector("#setupLog"),
+      configuredCount: document.querySelector("#configuredCount"),
+      detectedList: document.querySelector("#detectedList"),
+      brokerInput: document.querySelector("#brokerInput"),
+      topicInput: document.querySelector("#topicInput"),
+      computerInput: document.querySelector("#computerInput"),
+      saveButton: document.querySelector("#saveButton"),
+      connectButton: document.querySelector("#connectButton"),
+      disconnectButton: document.querySelector("#disconnectButton"),
+      clearButton: document.querySelector("#clearButton")
+    };
+
+    function loadConfiguredNames() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        if (Array.isArray(saved) && saved.length) return normalizeNames(saved);
+      } catch (error) {
+        // Ignore broken localStorage and fall back to preview.
+      }
+      return DEFAULT_NAMES;
+    }
+
+    function saveConfiguredNames(names) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(names));
+    }
+
+    function normalizeNames(value) {
+      const list = Array.isArray(value) ? value : String(value).split(/\r?\n|,/);
+      return [...new Set(list.map((name) => String(name).trim()).filter(Boolean))];
+    }
+
+    function keyForName(name) {
+      return String(name).replace(/[^a-zA-Z0-9_-]/g, "_") || "unknown";
+    }
+
+    function clamp(value, min = 0, max = 100) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return min;
+      return Math.min(max, Math.max(min, numeric));
+    }
+
+    function fmtPct(value) {
+      const pct = clamp(value);
+      return `${pct.toFixed(pct >= 10 ? 0 : 1)}%`;
+    }
+
+    function fmtNumber(value, digits = 1) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return "--";
+      return numeric.toFixed(digits);
+    }
+
+    function fmtBytes(bytes) {
+      const numeric = Number(bytes);
+      if (!Number.isFinite(numeric)) return "--";
+      const units = ["B", "KB", "MB", "GB", "TB"];
+      let value = numeric;
+      let unit = 0;
+      while (value >= 1024 && unit < units.length - 1) {
+        value /= 1024;
+        unit += 1;
+      }
+      return `${value.toFixed(unit < 2 ? 0 : 1)} ${units[unit]}`;
+    }
+
+    function setStatus(kind, text) {
+      els.status.classList.toggle("online", kind === "online");
+      els.statusText.textContent = text;
+    }
+
+    function setBar(element, value) {
+      element.style.setProperty("--value", `${clamp(value)}%`);
+    }
+
+    function setRing(element, value) {
+      element.style.setProperty("--pct", clamp(value));
+    }
+
+    function pageTemplate(name) {
+      const key = keyForName(name);
+      return `
+        <section class="page computer-page" data-page="computer" data-name="${escapeHtml(name)}" data-key="${key}">
+          <div class="page-shell">
+            <header class="topbar">
+              <div>
+                <h1>${escapeHtml(name)}</h1>
+                <div class="subline" data-field="subline">Waiting for MQTT payload</div>
+              </div>
+              <div class="status" data-field="localStatus"><span class="dot"></span><span>Idle</span></div>
+            </header>
+
+            <div class="content-grid">
+              <section class="hero" aria-label="CPU dashboard">
+                <div class="gauge-wrap">
+                  <div class="gauge" data-field="cpuGauge">
+                    <div class="gauge-center">
+                      <div>
+                        <div class="cpu-value" data-field="cpuValue">--</div>
+                        <div class="cpu-label">CPU Load</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="temp-module">
+                    <div class="temp-title">Temperature</div>
+                    <div class="temp-value"><strong data-field="tempValue">--</strong><span>°C</span></div>
+                  </div>
+                </div>
+                <div class="quick-stats">
+                  <div class="bar-row">
+                    <div>CPU</div>
+                    <div class="bar" data-field="cpuBar"></div>
+                    <div class="value-right" data-field="cpuMini">--%</div>
+                  </div>
+                  <div class="bar-row">
+                    <div>RAM</div>
+                    <div class="bar" data-field="memBar"></div>
+                    <div class="value-right" data-field="memMini">--%</div>
+                  </div>
+                  <div class="bar-row">
+                    <div>Disk I/O</div>
+                    <div class="bar" data-field="ioBar"></div>
+                    <div class="value-right" data-field="ioMini">--</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="metrics-grid">
+                <div class="panel">
+                  <div class="panel-title">Memory <span data-field="memBytes">--</span></div>
+                  <div class="duo">
+                    <div class="ring" data-field="ramRing">
+                      <div class="ring-face"><strong data-field="ramPct">--%</strong></div>
+                      <span>RAM</span>
+                    </div>
+                    <div class="ring" data-field="swapRing">
+                      <div class="ring-face"><strong data-field="swapPct">--%</strong></div>
+                      <span>Swap</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="panel-title">Network <span>Mbps</span></div>
+                  <div class="net-grid">
+                    <div class="net-cell">
+                      <div class="label">Download</div>
+                      <div class="number" data-field="downloadValue">--</div>
+                      <div class="unit">Mb/s</div>
+                    </div>
+                    <div class="net-cell">
+                      <div class="label">Upload</div>
+                      <div class="number" data-field="uploadValue">--</div>
+                      <div class="unit">Mb/s</div>
+                    </div>
+                  </div>
+                  <svg class="sparkline" data-field="netSpark" viewBox="0 0 320 34" preserveAspectRatio="none" aria-hidden="true"></svg>
+                </div>
+
+                <div class="panel">
+                  <div class="panel-title">Disk Usage <span data-field="diskCount">--</span></div>
+                  <div class="disk-list" data-field="diskList"><div class="metric-row"><span>No disk data</span><strong>--</strong></div></div>
+                </div>
+
+                <div class="panel">
+                  <div class="panel-title">Telemetry <span data-field="lastSeen">--</span></div>
+                  <div class="metric-row"><span>CPU Cores</span><strong data-field="coresValue">--</strong></div>
+                  <div class="metric-row"><span>OS</span><strong data-field="osValue">--</strong></div>
+                  <div class="metric-row"><span>Temp Source</span><strong data-field="tempSource">--</strong></div>
+                </div>
+              </section>
+            </div>
+
+            <div class="footer-line" data-field="log">Swipe up/down to switch computers. Page key: ${key}</div>
+          </div>
+        </section>
+      `;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function field(page, name) {
+      return page.querySelector(`[data-field="${name}"]`);
+    }
+
+    function renderPages() {
+      els.computerInput.value = state.configuredNames.join("\n");
+      els.configuredCount.textContent = `${state.configuredNames.length} computers`;
+      els.computerPages.innerHTML = state.configuredNames.map(pageTemplate).join("");
+      renderPageDots();
+      renderDetectedList();
+
+      for (const [name, payload] of state.latestByName.entries()) {
+        if (state.configuredNames.includes(name)) updateComputerPage(name, payload);
+      }
+    }
+
+    function renderPageDots() {
+      const pages = ["Setup", ...state.configuredNames];
+      els.pageDots.innerHTML = pages.map((label, index) => (
+        `<button class="page-dot" data-index="${index}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"></button>`
+      )).join("");
+      els.pageDots.querySelectorAll(".page-dot").forEach((button) => {
+        button.addEventListener("click", () => scrollToPage(Number(button.dataset.index)));
+      });
+      updateActiveDot();
+    }
+
+    function renderDetectedList() {
+      const names = [...state.detectedNames].sort();
+      if (!names.length) {
+        els.detectedList.innerHTML = `<div class="chip">No MQTT payload received yet</div>`;
+        return;
+      }
+
+      els.detectedList.innerHTML = names.map((name) => {
+        const configured = state.configuredNames.includes(name);
+        const live = state.latestByName.has(name);
+        const className = ["chip", configured ? "configured" : "", live ? "live" : ""].filter(Boolean).join(" ");
+        return `<button class="${className}" data-name="${escapeHtml(name)}">${escapeHtml(name)}</button>`;
+      }).join("");
+
+      els.detectedList.querySelectorAll("button[data-name]").forEach((button) => {
+        button.addEventListener("click", () => addComputerName(button.dataset.name));
+      });
+    }
+
+    function addComputerName(name) {
+      if (!name || state.configuredNames.includes(name)) return;
+      state.configuredNames = normalizeNames([...state.configuredNames, name]);
+      saveConfiguredNames(state.configuredNames);
+      renderPages();
+      els.setupLog.textContent = `Added ${name}. Swipe down to view it.`;
+    }
+
+    function applyConfiguredNames() {
+      const names = normalizeNames(els.computerInput.value);
+      state.configuredNames = names.length ? names : DEFAULT_NAMES;
+      saveConfiguredNames(state.configuredNames);
+      renderPages();
+      els.setupLog.textContent = `Saved ${state.configuredNames.length} computer pages.`;
+    }
+
+    function scrollToPage(index) {
+      const pages = [...document.querySelectorAll(".page")];
+      pages[index]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function updateActiveDot() {
+      const index = Math.round(els.snapRoot.scrollTop / Math.max(1, els.snapRoot.clientHeight));
+      els.pageDots.querySelectorAll(".page-dot").forEach((dot, dotIndex) => {
+        dot.classList.toggle("active", dotIndex === index);
+      });
+    }
+
+    function renderDisks(container, disks = []) {
+      field(container, "diskCount").textContent = `${disks.length} drives`;
+      const diskList = field(container, "diskList");
+      if (!disks.length) {
+        diskList.innerHTML = `<div class="metric-row"><span>No disk data</span><strong>--</strong></div>`;
+        return;
+      }
+
+      diskList.innerHTML = disks.slice(0, 4).map((disk) => {
+        const pct = clamp(disk.used_percent);
+        const name = disk.mountpoint || disk.device || "Disk";
+        return `
+          <div class="disk">
+            <div class="disk-head">
+              <strong>${escapeHtml(name)}</strong>
+              <span>${fmtPct(pct)} · ${fmtBytes(disk.free_bytes)} free</span>
+            </div>
+            <div class="bar" style="--value:${pct}%"></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function drawSpark(name, svg, value) {
+      const history = state.historyByName.get(name) || [];
+      history.push(Number(value) || 0);
+      while (history.length > 34) history.shift();
+      state.historyByName.set(name, history);
+
+      const width = 320;
+      const height = 34;
+      const max = Math.max(1, ...history);
+      const points = history.map((item, index) => {
+        const x = history.length <= 1 ? width : (index / (history.length - 1)) * width;
+        const y = height - (item / max) * (height - 4) - 2;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
+
+      svg.innerHTML = `
+        <polyline points="${points}" fill="none" stroke="rgba(255,182,41,.95)" stroke-width="2"/>
+        <polyline points="${points}" fill="none" stroke="rgba(102,239,255,.36)" stroke-width="5" opacity=".45"/>
+      `;
+    }
+
+    function updateComputerPage(name, payload) {
+      const page = document.querySelector(`.computer-page[data-key="${keyForName(name)}"]`);
+      if (!page) return;
+
+      const cpu = payload.cpu || {};
+      const memory = payload.memory || {};
+      const swap = payload.swap || {};
+      const network = payload.network || {};
+      const diskIo = payload.disk_io || {};
+      const temp = cpu.temperature || {};
+      const platform = payload.platform || {};
+
+      const cpuPct = clamp(cpu.usage_percent);
+      const memPct = clamp(memory.used_percent);
+      const swapPct = clamp(swap.used_percent);
+      const ioMbps = Number(diskIo.read_mbps || 0) + Number(diskIo.write_mbps || 0);
+      const down = Number(network.download_mbps || 0);
+      const up = Number(network.upload_mbps || 0);
+
+      field(page, "subline").textContent = payload.timestamp ? `Updated ${new Date(payload.timestamp).toLocaleTimeString()}` : "Live payload received";
+      const localStatus = field(page, "localStatus");
+      localStatus.classList.add("online");
+      localStatus.querySelector("span:last-child").textContent = "Live";
+
+      field(page, "cpuGauge").style.setProperty("--cpu", cpuPct);
+      field(page, "cpuValue").textContent = fmtNumber(cpuPct, cpuPct >= 10 ? 0 : 1);
+      field(page, "cpuMini").textContent = fmtPct(cpuPct);
+      setBar(field(page, "cpuBar"), cpuPct);
+
+      field(page, "tempValue").textContent = temp.celsius == null ? "--" : fmtNumber(temp.celsius, 0);
+      field(page, "tempSource").textContent = temp.available ? (temp.sensor || temp.source || "LibreHardwareMonitor") : "N/A";
+
+      field(page, "memMini").textContent = fmtPct(memPct);
+      setBar(field(page, "memBar"), memPct);
+      setRing(field(page, "ramRing"), memPct);
+      setRing(field(page, "swapRing"), swapPct);
+      field(page, "ramPct").textContent = fmtPct(memPct);
+      field(page, "swapPct").textContent = fmtPct(swapPct);
+      field(page, "memBytes").textContent = `${fmtBytes(memory.used_bytes)} / ${fmtBytes(memory.total_bytes)}`;
+
+      setBar(field(page, "ioBar"), Math.min(100, ioMbps * 20));
+      field(page, "ioMini").textContent = `${fmtNumber(ioMbps, 2)}M`;
+
+      field(page, "downloadValue").textContent = fmtNumber(down, down >= 10 ? 1 : 2);
+      field(page, "uploadValue").textContent = fmtNumber(up, up >= 10 ? 1 : 2);
+      drawSpark(name, field(page, "netSpark"), down + up);
+
+      renderDisks(page, payload.disks || []);
+      field(page, "coresValue").textContent = `${cpu.physical_count ?? "--"}P / ${cpu.logical_count ?? "--"}L`;
+      field(page, "osValue").textContent = [platform.system, platform.release].filter(Boolean).join(" ") || "--";
+      field(page, "lastSeen").textContent = payload.timestamp ? new Date(payload.timestamp).toLocaleTimeString() : "--";
+      field(page, "log").textContent = `Topic ${els.topicInput.value.trim()} · ${name}`;
+    }
+
+    function handlePayload(payload) {
+      const name = String(payload.computer_name || "").trim();
+      if (!name) return;
+
+      state.detectedNames.add(name);
+      state.latestByName.set(name, payload);
+      renderDetectedList();
+
+      if (state.configuredNames.includes(name)) {
+        updateComputerPage(name, payload);
+      }
+    }
+
+    function connectMqtt() {
+      const brokerUrl = els.brokerInput.value.trim();
+      const topic = els.topicInput.value.trim();
+      if (!brokerUrl || !topic) {
+        els.setupLog.textContent = "Enter WebSocket and topic first.";
+        return;
+      }
+
+      if (state.client) {
+        state.client.end(true);
+        state.client = null;
+      }
+
+      setStatus("offline", "Connecting");
+      els.setupLog.textContent = `Connecting: ${brokerUrl}`;
+
+      state.client = mqtt.connect(brokerUrl, {
+        clientId: `fleet_dashboard_${Math.random().toString(16).slice(2, 10)}`,
+        clean: true,
+        reconnectPeriod: 2500,
+        connectTimeout: 8000
+      });
+
+      state.client.on("connect", () => {
+        state.connected = true;
+        setStatus("online", "Online");
+        state.client.subscribe(topic, { qos: 0 }, (error) => {
+          els.setupLog.textContent = error ? `Subscribe failed: ${error.message}` : `Subscribed: ${topic}`;
+        });
+      });
+
+      state.client.on("message", (_topic, message) => {
+        try {
+          handlePayload(JSON.parse(message.toString()));
+        } catch (error) {
+          els.setupLog.textContent = `Invalid JSON payload: ${error.message}`;
+        }
+      });
+
+      state.client.on("reconnect", () => {
+        state.connected = false;
+        setStatus("offline", "Retrying");
+      });
+
+      state.client.on("close", () => {
+        state.connected = false;
+        if (state.client) setStatus("offline", "Offline");
+      });
+
+      state.client.on("error", (error) => {
+        els.setupLog.textContent = `MQTT error: ${error.message}`;
+      });
+    }
+
+    function disconnectMqtt() {
+      if (state.client) {
+        state.client.end(true);
+        state.client = null;
+      }
+      state.connected = false;
+      setStatus("offline", "Offline");
+      els.setupLog.textContent = "MQTT disconnected.";
+    }
+
+    function clearData() {
+      state.latestByName.clear();
+      state.detectedNames.clear();
+      state.historyByName.clear();
+      renderPages();
+      els.setupLog.textContent = "Cleared received payload cache.";
+    }
+
     async function enterFullscreen() {
       const root = document.documentElement;
       try {
@@ -1221,256 +1244,20 @@
       window.addEventListener("click", activate);
     }
 
+    els.saveButton.addEventListener("click", applyConfiguredNames);
+    els.connectButton.addEventListener("click", connectMqtt);
+    els.disconnectButton.addEventListener("click", disconnectMqtt);
+    els.clearButton.addEventListener("click", clearData);
+    els.snapRoot.addEventListener("scroll", updateActiveDot, { passive: true });
+    window.addEventListener("orientationchange", nudgeMobileAddressBar);
+
     window.addEventListener("load", async () => {
-      if (!(await enterFullscreen())) {
-        enableFullscreenFallback();
-      }
+      if (!(await enterFullscreen())) enableFullscreenFallback();
       nudgeMobileAddressBar();
     });
 
-    window.addEventListener("orientationchange", nudgeMobileAddressBar);
-
-    function syncLayoutMode() {
-      document.body.classList.toggle("landscape-mode", window.innerWidth > window.innerHeight);
-    }
-
-    syncLayoutMode();
-    window.addEventListener("resize", syncLayoutMode);
-    window.addEventListener("orientationchange", syncLayoutMode);
-
-    const els = {
-      status: document.querySelector("#status"),
-      statusText: document.querySelector("#statusText"),
-      computerName: document.querySelector("#computerName"),
-      cpuGauge: document.querySelector("#cpuGauge"),
-      cpuValue: document.querySelector("#cpuValue"),
-      tempValue: document.querySelector("#tempValue"),
-      cpuBar: document.querySelector("#cpuBar"),
-      cpuMini: document.querySelector("#cpuMini"),
-      memBar: document.querySelector("#memBar"),
-      memMini: document.querySelector("#memMini"),
-      ioBar: document.querySelector("#ioBar"),
-      ioMini: document.querySelector("#ioMini"),
-      brokerInput: document.querySelector("#brokerInput"),
-      topicInput: document.querySelector("#topicInput"),
-      connectButton: document.querySelector("#connectButton"),
-      disconnectButton: document.querySelector("#disconnectButton"),
-      ramRing: document.querySelector("#ramRing"),
-      swapRing: document.querySelector("#swapRing"),
-      ramPct: document.querySelector("#ramPct"),
-      swapPct: document.querySelector("#swapPct"),
-      memBytes: document.querySelector("#memBytes"),
-      downloadValue: document.querySelector("#downloadValue"),
-      uploadValue: document.querySelector("#uploadValue"),
-      netSpark: document.querySelector("#netSpark"),
-      diskCount: document.querySelector("#diskCount"),
-      diskList: document.querySelector("#diskList"),
-      lastSeen: document.querySelector("#lastSeen"),
-      coresValue: document.querySelector("#coresValue"),
-      osValue: document.querySelector("#osValue"),
-      tempSource: document.querySelector("#tempSource"),
-      log: document.querySelector("#log")
-    };
-
-    let client = null;
-    const netHistory = [];
-
-    function clamp(value, min = 0, max = 100) {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return min;
-      return Math.min(max, Math.max(min, numeric));
-    }
-
-    function fmtPct(value) {
-      return `${clamp(value).toFixed(value >= 10 ? 0 : 1)}%`;
-    }
-
-    function fmtNumber(value, digits = 1) {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return "--";
-      return numeric.toFixed(digits);
-    }
-
-    function fmtBytes(bytes) {
-      const numeric = Number(bytes);
-      if (!Number.isFinite(numeric)) return "--";
-      const units = ["B", "KB", "MB", "GB", "TB"];
-      let value = numeric;
-      let unit = 0;
-      while (value >= 1024 && unit < units.length - 1) {
-        value /= 1024;
-        unit += 1;
-      }
-      return `${value.toFixed(unit < 2 ? 0 : 1)} ${units[unit]}`;
-    }
-
-    function setStatus(kind, text) {
-      els.status.classList.toggle("online", kind === "online");
-      els.statusText.textContent = text;
-    }
-
-    function setBar(element, value) {
-      element.style.setProperty("--value", `${clamp(value)}%`);
-    }
-
-    function setRing(element, value) {
-      element.style.setProperty("--pct", clamp(value));
-    }
-
-    function drawSpark(values) {
-      const width = 320;
-      const height = 34;
-      const max = Math.max(1, ...values);
-      const points = values.map((value, index) => {
-        const x = values.length <= 1 ? width : (index / (values.length - 1)) * width;
-        const y = height - (value / max) * (height - 4) - 2;
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      }).join(" ");
-
-      els.netSpark.innerHTML = `
-        <polyline points="${points}" fill="none" stroke="rgba(255,182,41,.95)" stroke-width="2"/>
-        <polyline points="${points}" fill="none" stroke="rgba(102,239,255,.36)" stroke-width="5" opacity=".45"/>
-      `;
-    }
-
-    function renderDisks(disks = []) {
-      els.diskCount.textContent = `${disks.length} drives`;
-      if (!disks.length) {
-        els.diskList.innerHTML = `<div class="empty">沒有收到硬碟資料。</div>`;
-        return;
-      }
-
-      els.diskList.innerHTML = disks.map((disk) => {
-        const pct = clamp(disk.used_percent);
-        const name = disk.mountpoint || disk.device || "Disk";
-        return `
-          <div class="disk">
-            <div class="disk-head">
-              <strong>${name}</strong>
-              <span>${fmtPct(pct)} · ${fmtBytes(disk.free_bytes)} free</span>
-            </div>
-            <div class="bar" style="--value:${pct}%"></div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function updateDashboard(payload) {
-      const cpu = payload.cpu || {};
-      const memory = payload.memory || {};
-      const swap = payload.swap || {};
-      const network = payload.network || {};
-      const diskIo = payload.disk_io || {};
-      const temp = cpu.temperature || {};
-      const platform = payload.platform || {};
-
-      const cpuPct = clamp(cpu.usage_percent);
-      const memPct = clamp(memory.used_percent);
-      const swapPct = clamp(swap.used_percent);
-      const ioMbps = Number(diskIo.read_mbps || 0) + Number(diskIo.write_mbps || 0);
-
-      els.computerName.textContent = payload.computer_name || "Unknown computer";
-      els.cpuGauge.style.setProperty("--cpu", cpuPct);
-      els.cpuValue.textContent = fmtNumber(cpuPct, cpuPct >= 10 ? 0 : 1);
-      els.cpuMini.textContent = fmtPct(cpuPct);
-      setBar(els.cpuBar, cpuPct);
-
-      els.tempValue.textContent = temp.celsius == null ? "--" : fmtNumber(temp.celsius, 0);
-      els.tempSource.textContent = temp.available ? (temp.sensor || temp.source || "LibreHardwareMonitor") : "N/A";
-
-      els.memMini.textContent = fmtPct(memPct);
-      setBar(els.memBar, memPct);
-      setRing(els.ramRing, memPct);
-      setRing(els.swapRing, swapPct);
-      els.ramPct.textContent = fmtPct(memPct);
-      els.swapPct.textContent = fmtPct(swapPct);
-      els.memBytes.textContent = `${fmtBytes(memory.used_bytes)} / ${fmtBytes(memory.total_bytes)}`;
-
-      setBar(els.ioBar, Math.min(100, ioMbps * 20));
-      els.ioMini.textContent = `${fmtNumber(ioMbps, 2)}M`;
-
-      const down = Number(network.download_mbps || 0);
-      const up = Number(network.upload_mbps || 0);
-      els.downloadValue.textContent = fmtNumber(down, down >= 10 ? 1 : 2);
-      els.uploadValue.textContent = fmtNumber(up, up >= 10 ? 1 : 2);
-      netHistory.push(down + up);
-      while (netHistory.length > 34) netHistory.shift();
-      drawSpark(netHistory);
-
-      renderDisks(payload.disks || []);
-
-      const logical = cpu.logical_count ?? "--";
-      const physical = cpu.physical_count ?? "--";
-      els.coresValue.textContent = `${physical}P / ${logical}L`;
-      els.osValue.textContent = [platform.system, platform.release].filter(Boolean).join(" ") || "--";
-      els.lastSeen.textContent = payload.timestamp ? new Date(payload.timestamp).toLocaleTimeString() : "--";
-      els.log.textContent = `Last payload: ${payload.timestamp || "unknown time"}`;
-    }
-
-    function connectMqtt() {
-      const brokerUrl = els.brokerInput.value.trim();
-      const topic = els.topicInput.value.trim();
-      if (!brokerUrl || !topic) {
-        els.log.textContent = "請輸入 WebSocket 與 Topic。";
-        return;
-      }
-
-      if (client) {
-        client.end(true);
-        client = null;
-      }
-
-      setStatus("offline", "Connecting");
-      els.log.textContent = `連線中：${brokerUrl}`;
-
-      client = mqtt.connect(brokerUrl, {
-        clientId: `mobile_dashboard_${Math.random().toString(16).slice(2, 10)}`,
-        clean: true,
-        reconnectPeriod: 2500,
-        connectTimeout: 8000
-      });
-
-      client.on("connect", () => {
-        setStatus("online", "Online");
-        client.subscribe(topic, { qos: 0 }, (error) => {
-          els.log.textContent = error ? `訂閱失敗：${error.message}` : `已訂閱：${topic}`;
-        });
-      });
-
-      client.on("message", (_topic, message) => {
-        try {
-          updateDashboard(JSON.parse(message.toString()));
-        } catch (error) {
-          els.log.textContent = `Payload 不是有效 JSON：${error.message}`;
-        }
-      });
-
-      client.on("reconnect", () => {
-        setStatus("offline", "Retrying");
-      });
-
-      client.on("close", () => {
-        if (client) setStatus("offline", "Offline");
-      });
-
-      client.on("error", (error) => {
-        els.log.textContent = `MQTT 錯誤：${error.message}`;
-      });
-    }
-
-    function disconnectMqtt() {
-      if (client) {
-        client.end(true);
-        client = null;
-      }
-      setStatus("offline", "Offline");
-      els.log.textContent = "已中斷 MQTT 連線。";
-    }
-
-    els.connectButton.addEventListener("click", connectMqtt);
-    els.disconnectButton.addEventListener("click", disconnectMqtt);
-
-    updateDashboard({
+    renderPages();
+    handlePayload({
       computer_name: "Preview Mode",
       timestamp: new Date().toISOString(),
       platform: { system: "Windows", release: "11" },
@@ -1497,6 +1284,7 @@
       ],
       disk_io: { read_mbps: 0.02, write_mbps: 0.08 }
     });
+    connectMqtt();
   </script>
 </body>
 </html>
