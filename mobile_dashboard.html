@@ -163,22 +163,22 @@
 
     .setup-grid {
       display: grid;
-      grid-template-columns: minmax(250px, 0.92fr) 1.08fr;
-      grid-template-rows: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr);
+      grid-template-rows: minmax(0, 1fr) minmax(142px, 0.62fr);
       gap: 10px;
       min-height: 0;
     }
 
     .setup-primary {
-      grid-row: 1 / 3;
+      min-height: 0;
     }
 
     .weather-config-panel {
-      min-height: 148px;
+      min-height: 0;
     }
 
     .weather-city-input {
-      min-height: 62px;
+      min-height: 31px;
     }
 
     .weather-help {
@@ -189,6 +189,10 @@
 
     .weather-config-panel .button-row {
       grid-template-columns: 1fr 1fr;
+    }
+
+    .message-config-panel {
+      min-height: 0;
     }
 
     .panel {
@@ -945,6 +949,135 @@
       text-shadow: 0 0 14px rgba(33, 244, 255, 0.5);
     }
 
+    .flip-clock-page {
+      background: #202020;
+    }
+
+    .flip-clock-shell {
+      width: min(100%, 1280px);
+      grid-template-rows: minmax(0, 1fr);
+      background: #202020;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.18);
+      padding: 18px;
+    }
+
+    .flip-clock-stage {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      justify-items: center;
+      gap: clamp(22px, 4.8svh, 58px);
+      min-height: 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .flip-clock-date,
+    .flip-clock-message {
+      max-width: 100%;
+      color: #d1d1d1;
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 0.88;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 3px 0 rgba(0, 0, 0, 0.28);
+    }
+
+    .flip-clock-date {
+      align-self: end;
+      font-size: clamp(34px, 7vw, 84px);
+      transform: translateY(0.08em);
+    }
+
+    .flip-clock-message {
+      align-self: start;
+      font-size: clamp(34px, 6.4vw, 78px);
+      transform: translateY(-0.04em);
+    }
+
+    .flip-clock-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) auto repeat(2, minmax(0, 1fr)) auto repeat(2, minmax(0, 1fr));
+      align-items: center;
+      justify-content: center;
+      gap: clamp(7px, 1.7vw, 24px);
+      width: min(100%, 980px);
+    }
+
+    .flip-card {
+      position: relative;
+      display: grid;
+      place-items: center;
+      height: clamp(86px, 21vw, 192px);
+      aspect-ratio: 0.68;
+      border-radius: clamp(8px, 1.4vw, 17px);
+      background: linear-gradient(180deg, #373737 0 49%, #303030 50% 100%);
+      box-shadow:
+        0 12px 20px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -30px 42px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    .flip-card::before {
+      content: "";
+      position: absolute;
+      inset: 50% 0 auto;
+      height: 2px;
+      background: rgba(0, 0, 0, 0.42);
+      z-index: 2;
+    }
+
+    .flip-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 42%, rgba(0, 0, 0, 0.18));
+      pointer-events: none;
+    }
+
+    .flip-card.flip-card-changing {
+      animation: flip-card-pop 1.25s cubic-bezier(0.2, 0.76, 0.2, 1);
+    }
+
+    .flip-digit {
+      position: relative;
+      z-index: 1;
+      color: #d2d2d2;
+      font-size: clamp(72px, 17vw, 170px);
+      line-height: 0.86;
+      font-weight: 950;
+      text-shadow:
+        0 2px 2px rgba(255, 255, 255, 0.08),
+        0 5px 7px rgba(0, 0, 0, 0.72);
+      transform: translateY(-1px);
+    }
+
+    .flip-separator {
+      display: grid;
+      gap: clamp(14px, 3vw, 34px);
+      padding: 0 clamp(0px, 0.25vw, 4px);
+    }
+
+    .flip-separator span {
+      width: clamp(12px, 2.2vw, 26px);
+      aspect-ratio: 1;
+      display: block;
+      border-radius: 50%;
+      background: #d2d2d2;
+      opacity: 0.9;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+    }
+
+    @keyframes flip-card-pop {
+      0% { transform: rotateX(0deg); filter: brightness(1); }
+      45% { transform: rotateX(-16deg); filter: brightness(0.72); }
+      100% { transform: rotateX(0deg); filter: brightness(1); }
+    }
+
     .page-dots {
       position: fixed;
       right: max(7px, env(safe-area-inset-right));
@@ -1165,6 +1298,46 @@
       .weather-clock {
         font-size: 15px;
       }
+
+      .flip-clock-shell {
+        height: calc(100svh - 24px);
+        padding: 12px;
+      }
+
+      .flip-clock-stage {
+        grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: clamp(18px, 4svh, 34px);
+      }
+
+      .flip-clock-date {
+        font-size: clamp(26px, 9vw, 48px);
+      }
+
+      .flip-clock-row {
+        gap: clamp(4px, 1.2vw, 8px);
+        width: min(100%, 360px);
+      }
+
+      .flip-card {
+        height: clamp(74px, 22vw, 96px);
+        border-radius: 8px;
+      }
+
+      .flip-digit {
+        font-size: clamp(58px, 17vw, 78px);
+      }
+
+      .flip-separator {
+        gap: 13px;
+      }
+
+      .flip-separator span {
+        width: 10px;
+      }
+
+      .flip-clock-message {
+        font-size: clamp(25px, 8.6vw, 44px);
+      }
     }
 
     @media (orientation: landscape) and (max-height: 520px) {
@@ -1274,6 +1447,47 @@
       .weather-clock {
         font-size: 24px;
       }
+
+      .flip-clock-shell {
+        padding: 10px;
+      }
+
+      .flip-clock-stage {
+        grid-template-rows: minmax(0, 0.78fr) auto minmax(0, 0.78fr);
+        gap: clamp(26px, 7svh, 42px);
+      }
+
+      .flip-clock-date {
+        font-size: clamp(26px, 5.8vw, 46px);
+        line-height: 0.82;
+        transform: translateY(0);
+      }
+
+      .flip-clock-row {
+        width: min(100%, 760px);
+      }
+
+      .flip-card {
+        height: clamp(110px, 33svh, 144px);
+      }
+
+      .flip-digit {
+        font-size: clamp(88px, 27svh, 126px);
+      }
+
+      .flip-separator {
+        gap: clamp(10px, 3svh, 18px);
+      }
+
+      .flip-separator span {
+        width: clamp(10px, 2.5svh, 16px);
+      }
+
+      .flip-clock-message {
+        font-size: clamp(24px, 5.4vw, 44px);
+        line-height: 0.84;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -1316,7 +1530,7 @@
             </div>
           </section>
 
-          <section class="panel">
+          <section class="panel setup-detected">
             <div class="panel-title">Detected Computers <span>tap to add</span></div>
             <div class="chip-grid" id="detectedList"></div>
           </section>
@@ -1326,14 +1540,29 @@
             <div class="form-stack">
               <label>
                 Smart weather forecast cities
-                <textarea class="weather-city-input" id="weatherCityInput" spellcheck="false" placeholder="台北&#10;台中&#10;高雄"></textarea>
+                <input class="weather-city-input" id="weatherCityInput" spellcheck="false" placeholder="台北, 台中, 高雄" autocomplete="off">
               </label>
-              <div class="weather-help">One city per line. The first three entries rotate every 10 seconds.</div>
+              <div class="weather-help">Use commas. The first three cities rotate every 10 seconds.</div>
               <div class="button-row">
                 <button id="saveWeatherButton">Save Weather</button>
                 <button class="secondary" id="resetWeatherButton">Default</button>
               </div>
               <div class="footer-line" id="weatherConfigLog">Ready. Using default cities.</div>
+            </div>
+          </section>
+
+          <section class="panel message-config-panel">
+            <div class="panel-title">Clock Message <span>last page</span></div>
+            <div class="form-stack">
+              <label>
+                Flip clock lower title
+                <input id="clockMessageInput" value="歡迎參訪AIoT實驗室" autocomplete="off">
+              </label>
+              <div class="button-row">
+                <button id="saveClockMessageButton">Save Message</button>
+                <button class="secondary" id="resetClockMessageButton">Default</button>
+              </div>
+              <div class="footer-line" id="clockMessageLog">Ready. Clock page message is configurable.</div>
             </div>
           </section>
         </div>
@@ -1393,13 +1622,34 @@
         </footer>
       </div>
     </section>
+
+    <section class="page flip-clock-page" data-page="flip-clock">
+      <div class="page-shell flip-clock-shell">
+        <section class="flip-clock-stage" aria-label="Flip clock">
+          <div class="flip-clock-date" id="flipClockDate">----年--月--日 星期-</div>
+          <div class="flip-clock-row" aria-label="Current time">
+            <div class="flip-card" data-clock-digit="0"><span class="flip-digit">0</span></div>
+            <div class="flip-card" data-clock-digit="1"><span class="flip-digit">0</span></div>
+            <div class="flip-separator" aria-hidden="true"><span></span><span></span></div>
+            <div class="flip-card" data-clock-digit="2"><span class="flip-digit">0</span></div>
+            <div class="flip-card" data-clock-digit="3"><span class="flip-digit">0</span></div>
+            <div class="flip-separator" aria-hidden="true"><span></span><span></span></div>
+            <div class="flip-card" data-clock-digit="4"><span class="flip-digit">0</span></div>
+            <div class="flip-card" data-clock-digit="5"><span class="flip-digit">0</span></div>
+          </div>
+          <div class="flip-clock-message" id="flipClockMessage">歡迎參訪AIoT實驗室</div>
+        </section>
+      </div>
+    </section>
   </main>
   <nav class="page-dots" id="pageDots" aria-label="Page index"></nav>
 
   <script>
     const STORAGE_KEY = "system-core-computers-v2";
     const WEATHER_STORAGE_KEY = "system-core-weather-cities-v1";
+    const CLOCK_MESSAGE_STORAGE_KEY = "system-core-clock-message-v1";
     const DEFAULT_NAMES = ["Preview Mode"];
+    const DEFAULT_CLOCK_MESSAGE = "歡迎參訪AIoT實驗室";
     const WEATHER_ROTATION_MS = 10000;
     const DEFAULT_WEATHER_LOCATIONS = [
       { name: "台北", latitude: 25.033, longitude: 121.5654, timezone: "Asia/Taipei" },
@@ -1417,7 +1667,9 @@
       weatherLocations: loadWeatherLocations(),
       weatherIndex: 0,
       weatherByName: new Map(),
-      weatherTimer: null
+      weatherTimer: null,
+      clockMessage: loadClockMessage(),
+      clockDigits: ""
     };
 
     const els = {
@@ -1442,6 +1694,13 @@
       resetWeatherButton: document.querySelector("#resetWeatherButton"),
       weatherConfigLog: document.querySelector("#weatherConfigLog"),
       weatherTabs: document.querySelector("#weatherTabs"),
+      clockMessageInput: document.querySelector("#clockMessageInput"),
+      saveClockMessageButton: document.querySelector("#saveClockMessageButton"),
+      resetClockMessageButton: document.querySelector("#resetClockMessageButton"),
+      clockMessageLog: document.querySelector("#clockMessageLog"),
+      flipClockDate: document.querySelector("#flipClockDate"),
+      flipClockMessage: document.querySelector("#flipClockMessage"),
+      flipClockDigits: [...document.querySelectorAll("[data-clock-digit]")],
       weatherFields: [...document.querySelectorAll("[data-weather]")].reduce((fields, node) => {
         fields[node.dataset.weather] = node;
         return fields;
@@ -1475,6 +1734,15 @@
 
     function saveWeatherLocations(locations) {
       localStorage.setItem(WEATHER_STORAGE_KEY, JSON.stringify(locations));
+    }
+
+    function loadClockMessage() {
+      const saved = localStorage.getItem(CLOCK_MESSAGE_STORAGE_KEY);
+      return saved && saved.trim() ? saved.trim() : DEFAULT_CLOCK_MESSAGE;
+    }
+
+    function saveClockMessage(message) {
+      localStorage.setItem(CLOCK_MESSAGE_STORAGE_KEY, message);
     }
 
     function normalizeNames(value) {
@@ -1593,6 +1861,26 @@
         day: "numeric",
         weekday: "short"
       }).format(date).replace("週", "");
+    }
+
+    function formatClockDate(date = new Date()) {
+      return new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      }).format(date).replace(/\s/g, "");
+    }
+
+    function formatClockDigits(date = new Date()) {
+      return new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(date).replace(/\D/g, "");
     }
 
     function setStatus(kind, text) {
@@ -1729,6 +2017,7 @@
       renderPageDots();
       renderDetectedList();
       renderWeatherConfig();
+      renderClockMessageConfig();
 
       for (const [name, payload] of state.latestByName.entries()) {
         if (state.configuredNames.includes(name)) updateComputerPage(name, payload);
@@ -1736,12 +2025,12 @@
     }
 
     function renderWeatherConfig() {
-      els.weatherCityInput.value = state.weatherLocations.map((location) => location.name).join("\n");
+      els.weatherCityInput.value = state.weatherLocations.map((location) => location.name).join(", ");
       els.weatherConfiguredCount.textContent = `${state.weatherLocations.length} cities`;
     }
 
     function renderPageDots() {
-      const pages = ["Setup", ...state.configuredNames, "Smart Weather"];
+      const pages = ["Setup", ...state.configuredNames, "Smart Weather", "Flip Clock"];
       els.pageDots.innerHTML = pages.map((label, index) => (
         `<button class="page-dot" data-index="${index}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"></button>`
       )).join("");
@@ -1749,6 +2038,11 @@
         button.addEventListener("click", () => scrollToPage(Number(button.dataset.index)));
       });
       updateActiveDot();
+    }
+
+    function renderClockMessageConfig() {
+      els.clockMessageInput.value = state.clockMessage;
+      els.flipClockMessage.textContent = state.clockMessage;
     }
 
     function renderWeatherTabs() {
@@ -1991,6 +2285,38 @@
       scheduleWeatherRotation();
       els.weatherConfigLog.textContent = "Restored default weather cities.";
       loadWeather();
+    }
+
+    function applyClockMessage() {
+      const message = els.clockMessageInput.value.trim() || DEFAULT_CLOCK_MESSAGE;
+      state.clockMessage = message;
+      saveClockMessage(message);
+      renderClockMessageConfig();
+      els.clockMessageLog.textContent = "Saved flip clock message.";
+    }
+
+    function resetClockMessage() {
+      state.clockMessage = DEFAULT_CLOCK_MESSAGE;
+      saveClockMessage(state.clockMessage);
+      renderClockMessageConfig();
+      els.clockMessageLog.textContent = "Restored default flip clock message.";
+    }
+
+    function updateFlipClock() {
+      const now = new Date();
+      const digits = formatClockDigits(now).padStart(6, "0").slice(-6);
+      els.flipClockDate.textContent = formatClockDate(now);
+      els.flipClockDigits.forEach((card, index) => {
+        const digit = digits[index] || "0";
+        const digitElement = card.querySelector(".flip-digit");
+        if (digitElement.textContent !== digit) {
+          digitElement.textContent = digit;
+          card.classList.remove("flip-card-changing");
+          void card.offsetWidth;
+          card.classList.add("flip-card-changing");
+        }
+      });
+      state.clockDigits = digits;
     }
 
     function scrollToPage(index) {
@@ -2236,6 +2562,8 @@
     els.saveButton.addEventListener("click", applyConfiguredNames);
     els.saveWeatherButton.addEventListener("click", applyWeatherLocations);
     els.resetWeatherButton.addEventListener("click", resetWeatherLocations);
+    els.saveClockMessageButton.addEventListener("click", applyClockMessage);
+    els.resetClockMessageButton.addEventListener("click", resetClockMessage);
     els.connectButton.addEventListener("click", connectMqtt);
     els.disconnectButton.addEventListener("click", disconnectMqtt);
     els.clearButton.addEventListener("click", clearData);
@@ -2250,11 +2578,13 @@
     renderWeatherTabs();
     renderPages();
     renderWeather();
+    updateFlipClock();
     loadWeather();
     scheduleWeatherRotation();
     window.setInterval(() => {
       els.weatherFields.date.textContent = formatTaiwanDate();
       els.weatherFields.clock.textContent = formatTaiwanTime();
+      updateFlipClock();
     }, 1000);
     window.setInterval(loadWeather, 30 * 60 * 1000);
     handlePayload({
