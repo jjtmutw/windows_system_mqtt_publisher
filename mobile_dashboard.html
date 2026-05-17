@@ -11,6 +11,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="preload" href="./assets/smart-weather-taipei101.png?v=20260517" as="image">
   <title>Windows System MQTT Dashboard</title>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
@@ -740,20 +741,35 @@
       overflow: hidden;
     }
 
-    .weather-stage::before {
+    .weather-stage::before,
+    .weather-stage::after {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
+    }
+
+    .weather-stage::before {
+      z-index: 1;
       background:
         linear-gradient(rgba(33, 244, 255, 0.055) 1px, transparent 1px) 0 0 / 100% 34px,
         linear-gradient(90deg, rgba(33, 244, 255, 0.045) 1px, transparent 1px) 0 0 / 34px 100%;
       mask-image: linear-gradient(90deg, black, transparent 42%, black);
     }
 
+    .weather-stage::after {
+      z-index: 0;
+      height: 66%;
+      background:
+        linear-gradient(90deg, rgba(0, 8, 20, 0.76), rgba(0, 8, 20, 0.18) 38%, rgba(0, 8, 20, 0.72)),
+        linear-gradient(180deg, rgba(0, 9, 24, 0.1), rgba(0, 9, 24, 0.88)),
+        url("./assets/smart-weather-taipei101.png?v=20260517") center 48% / cover no-repeat;
+      opacity: 0.86;
+    }
+
     .weather-now {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       display: grid;
       align-content: center;
       gap: 12px;
@@ -807,7 +823,7 @@
 
     .weather-week {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
       align-items: end;
@@ -868,7 +884,7 @@
 
     .weather-side {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       display: grid;
       align-content: center;
       gap: 18px;
@@ -1033,6 +1049,15 @@
         gap: 5px;
       }
 
+      .weather-stage::after {
+        height: 36%;
+        background:
+          linear-gradient(90deg, rgba(0, 8, 20, 0.58), rgba(0, 8, 20, 0.12) 44%, rgba(0, 8, 20, 0.58)),
+          linear-gradient(180deg, rgba(0, 9, 24, 0.04), rgba(0, 9, 24, 0.86)),
+          url("./assets/smart-weather-taipei101.png?v=20260517") 35% 48% / auto 112% no-repeat;
+        opacity: 0.9;
+      }
+
       .weather-now {
         grid-template-columns: 1fr 70px 1.05fr;
         align-items: center;
@@ -1161,6 +1186,15 @@
       .weather-stage {
         grid-template-columns: minmax(120px, 0.72fr) minmax(0, 2.2fr) 42px;
         gap: 7px;
+      }
+
+      .weather-stage::after {
+        height: 78%;
+        background:
+          linear-gradient(90deg, rgba(0, 8, 20, 0.58), rgba(0, 8, 20, 0.12) 44%, rgba(0, 8, 20, 0.62)),
+          linear-gradient(180deg, rgba(0, 9, 24, 0.02), rgba(0, 9, 24, 0.84)),
+          url("./assets/smart-weather-taipei101.png?v=20260517") center 48% / cover no-repeat;
+        opacity: 0.9;
       }
 
       .weather-now {
@@ -1337,7 +1371,7 @@
             <div class="weather-side-item">
               <div class="weather-side-icon">♨</div>
               <div>溫度</div>
-              <strong data-weather="humidity">--%</strong>
+              <strong data-weather="sideTemperature">--°C</strong>
             </div>
             <div class="weather-side-item">
               <div class="weather-side-icon">💧</div>
@@ -1511,6 +1545,11 @@
       const numeric = Number(value);
       if (!Number.isFinite(numeric)) return "--";
       return Math.round(numeric);
+    }
+
+    function fmtWeatherTempUnit(value) {
+      const temp = fmtWeatherTemp(value);
+      return temp === "--" ? "--°C" : `${temp}°C`;
     }
 
     function weatherCodeMeta(code) {
@@ -1806,14 +1845,15 @@
       const daily = data?.daily || {};
       const currentMeta = weatherCodeMeta(current.weather_code);
       const rainToday = daily.precipitation_probability_max?.[0];
+      const currentTemperature = current.temperature_2m;
 
       els.weatherFields.city.textContent = location.name;
       els.weatherFields.mainIcon.textContent = currentMeta.icon;
-      els.weatherFields.temperature.textContent = fmtWeatherTemp(current.temperature_2m);
+      els.weatherFields.temperature.textContent = fmtWeatherTemp(currentTemperature);
       els.weatherFields.summary.textContent = data?.error
         ? `資料讀取中斷：${data.error}`
         : `${currentMeta.label} · 體感 ${fmtWeatherTemp(current.apparent_temperature)}°C`;
-      els.weatherFields.humidity.textContent = current.relative_humidity_2m == null ? "--%" : `${Math.round(current.relative_humidity_2m)}%`;
+      els.weatherFields.sideTemperature.textContent = fmtWeatherTempUnit(currentTemperature);
       els.weatherFields.rain.textContent = rainToday == null ? "--%" : `${Math.round(rainToday)}%`;
       els.weatherFields.wind.textContent = current.wind_speed_10m == null ? "--" : `${Math.round(current.wind_speed_10m)} km/h`;
       els.weatherFields.date.textContent = formatTaiwanDate();
