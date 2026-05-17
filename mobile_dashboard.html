@@ -626,6 +626,286 @@
       text-overflow: ellipsis;
     }
 
+    .weather-page {
+      --weather-line: rgba(0, 225, 255, 0.62);
+      --weather-cyan: #21f4ff;
+      --weather-blue: #2d8cff;
+      background:
+        radial-gradient(circle at 72% 28%, rgba(31, 129, 255, 0.28), transparent 35%),
+        linear-gradient(180deg, rgba(7, 23, 51, 0.58), rgba(1, 7, 16, 0.96)),
+        var(--bg);
+    }
+
+    .weather-shell {
+      width: min(100%, 1180px);
+      grid-template-rows: 58px minmax(0, 1fr) 64px;
+      gap: 10px;
+      border: 1px solid rgba(0, 225, 255, 0.42);
+      background:
+        linear-gradient(90deg, rgba(0, 225, 255, 0.09), transparent 34%, rgba(45, 140, 255, 0.08)),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 28%),
+        rgba(0, 8, 20, 0.84);
+      box-shadow: 0 0 42px rgba(0, 207, 255, 0.16), inset 0 0 42px rgba(45, 140, 255, 0.09);
+      padding: 12px 16px 14px;
+      overflow: hidden;
+    }
+
+    .weather-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      border-bottom: 1px solid rgba(0, 225, 255, 0.28);
+    }
+
+    .weather-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    .weather-logo {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      aspect-ratio: 1;
+      border: 1px solid var(--weather-line);
+      color: var(--weather-cyan);
+      background: rgba(0, 132, 255, 0.12);
+      clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+      text-shadow: 0 0 12px currentColor;
+    }
+
+    .weather-location-tabs {
+      display: flex;
+      gap: 7px;
+      overflow: hidden;
+    }
+
+    .weather-tab {
+      width: 34px;
+      min-height: 4px;
+      padding: 0;
+      border-color: rgba(45, 140, 255, 0.42);
+      background: rgba(45, 140, 255, 0.26);
+    }
+
+    .weather-tab.active {
+      border-color: var(--weather-cyan);
+      background: var(--weather-cyan);
+      box-shadow: 0 0 14px rgba(33, 244, 255, 0.58);
+    }
+
+    .weather-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.9fr) 2.15fr 54px;
+      gap: 14px;
+      min-height: 0;
+      background:
+        linear-gradient(90deg, rgba(0, 8, 20, 0.72), rgba(0, 8, 20, 0.18) 36%, rgba(0, 8, 20, 0.72)),
+        radial-gradient(circle at 78% 70%, rgba(0, 225, 255, 0.32), transparent 27%),
+        linear-gradient(145deg, rgba(14, 71, 139, 0.55), rgba(2, 9, 22, 0.64));
+      border: 1px solid rgba(0, 225, 255, 0.22);
+      overflow: hidden;
+    }
+
+    .weather-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(33, 244, 255, 0.055) 1px, transparent 1px) 0 0 / 100% 34px,
+        linear-gradient(90deg, rgba(33, 244, 255, 0.045) 1px, transparent 1px) 0 0 / 34px 100%;
+      mask-image: linear-gradient(90deg, black, transparent 42%, black);
+    }
+
+    .weather-now {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 20px 10px 18px 30px;
+      min-width: 0;
+    }
+
+    .weather-city {
+      font-size: clamp(38px, 8vw, 76px);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 0 18px rgba(189, 220, 255, 0.8);
+    }
+
+    .weather-main-icon {
+      width: min(154px, 34vw);
+      aspect-ratio: 1.22;
+      display: grid;
+      place-items: center;
+      font-size: clamp(64px, 11vw, 112px);
+      line-height: 1;
+      filter: drop-shadow(0 0 18px rgba(33, 244, 255, 0.36));
+    }
+
+    .weather-temp-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .weather-temp {
+      font-size: clamp(56px, 11vw, 96px);
+      line-height: 0.9;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 18px rgba(189, 220, 255, 0.75);
+    }
+
+    .weather-temp-unit {
+      font-size: clamp(26px, 5vw, 44px);
+      color: rgba(215, 238, 255, 0.92);
+    }
+
+    .weather-feels {
+      color: rgba(215, 238, 255, 0.76);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .weather-week {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      align-items: end;
+      gap: 8px;
+      padding: 0 0 16px;
+      min-width: 0;
+    }
+
+    .weather-day {
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      min-height: 174px;
+      gap: 8px;
+      padding: 10px 8px;
+      border: 1px solid rgba(0, 225, 255, 0.33);
+      background: rgba(5, 25, 58, 0.62);
+      box-shadow: inset 0 0 24px rgba(45, 140, 255, 0.08);
+      clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+    }
+
+    .weather-day-date {
+      color: rgba(246, 248, 248, 0.92);
+      font-size: 15px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .weather-day-icon {
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      filter: drop-shadow(0 0 12px rgba(33, 244, 255, 0.25));
+    }
+
+    .weather-day-temp {
+      font-size: 19px;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .weather-day-temp span:first-child {
+      color: #ffbb6a;
+    }
+
+    .weather-day-temp span:last-child {
+      color: var(--weather-blue);
+    }
+
+    .weather-day-rain {
+      color: rgba(215, 238, 255, 0.78);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .weather-side {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding-right: 12px;
+      color: var(--weather-blue);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .weather-side-item {
+      display: grid;
+      gap: 5px;
+      justify-items: center;
+    }
+
+    .weather-side-icon {
+      color: var(--weather-cyan);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .weather-bottom {
+      display: grid;
+      grid-template-columns: minmax(190px, 0.8fr) minmax(210px, 1fr) minmax(210px, 0.8fr);
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .weather-bottom-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 46px;
+      gap: 10px;
+      border: 1px solid rgba(0, 225, 255, 0.32);
+      background: rgba(2, 15, 35, 0.72);
+      color: rgba(246, 248, 248, 0.9);
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .weather-bottom-cell strong {
+      color: var(--weather-cyan);
+      font-size: 20px;
+      letter-spacing: 4px;
+    }
+
+    .weather-clock {
+      color: rgba(189, 239, 255, 0.96);
+      font-size: clamp(28px, 4.6vw, 40px);
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 14px rgba(33, 244, 255, 0.5);
+    }
+
     .page-dots {
       position: fixed;
       right: max(7px, env(safe-area-inset-right));
@@ -664,7 +944,9 @@
 
       .setup-grid,
       .content-grid,
-      .metrics-grid {
+      .metrics-grid,
+      .weather-stage,
+      .weather-bottom {
         grid-template-columns: 1fr;
       }
 
@@ -678,6 +960,59 @@
 
       .ring-face {
         width: 76px;
+      }
+
+      .weather-shell {
+        height: auto;
+        min-height: calc(100svh - 24px);
+        grid-template-rows: auto auto auto;
+        padding: 10px;
+      }
+
+      .weather-top {
+        align-items: flex-start;
+      }
+
+      .weather-brand {
+        font-size: 11px;
+        letter-spacing: 3px;
+      }
+
+      .weather-location-tabs {
+        max-width: 128px;
+      }
+
+      .weather-stage {
+        grid-template-rows: auto auto auto;
+      }
+
+      .weather-now {
+        padding: 18px 16px 6px;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .weather-week {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0 12px 12px;
+      }
+
+      .weather-day {
+        min-height: 132px;
+      }
+
+      .weather-side {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 0 12px 14px;
+      }
+
+      .weather-bottom {
+        gap: 8px;
+      }
+
+      .weather-bottom-cell {
+        min-height: 40px;
+        font-size: 14px;
       }
     }
   </style>
@@ -732,12 +1067,70 @@
     </section>
 
     <div id="computerPages"></div>
+
+    <section class="page weather-page" data-page="weather">
+      <div class="page-shell weather-shell">
+        <header class="weather-top">
+          <div class="weather-brand">
+            <div class="weather-logo" aria-hidden="true">☁</div>
+            <div>Smart Weather</div>
+          </div>
+          <div class="weather-location-tabs" id="weatherTabs" aria-label="Weather locations"></div>
+        </header>
+
+        <div class="weather-stage">
+          <section class="weather-now" aria-label="Current weather">
+            <div class="weather-city" data-weather="city">台北</div>
+            <div class="weather-main-icon" data-weather="mainIcon">🌤️</div>
+            <div class="weather-temp-row">
+              <div class="weather-temp" data-weather="temperature">--</div>
+              <div class="weather-temp-unit">°C</div>
+            </div>
+            <div class="weather-feels" data-weather="summary">體感 --°C</div>
+          </section>
+
+          <section class="weather-week" data-weather="week" aria-label="One week forecast"></section>
+
+          <aside class="weather-side" aria-label="Weather metrics">
+            <div class="weather-side-item">
+              <div class="weather-side-icon">♨</div>
+              <div>溫度</div>
+              <strong data-weather="humidity">--%</strong>
+            </div>
+            <div class="weather-side-item">
+              <div class="weather-side-icon">💧</div>
+              <div>降雨</div>
+              <strong data-weather="rain">--%</strong>
+            </div>
+            <div class="weather-side-item">
+              <div class="weather-side-icon">≋</div>
+              <div>風速</div>
+              <strong data-weather="wind">--</strong>
+            </div>
+          </aside>
+        </div>
+
+        <footer class="weather-bottom">
+          <div class="weather-bottom-cell">📅 <span data-weather="date">----</span></div>
+          <div class="weather-bottom-cell"><strong>一週氣象預報</strong></div>
+          <div class="weather-bottom-cell">即時時間 <span class="weather-clock" data-weather="clock">--:--:--</span></div>
+        </footer>
+      </div>
+    </section>
   </main>
   <nav class="page-dots" id="pageDots" aria-label="Page index"></nav>
 
   <script>
     const STORAGE_KEY = "system-core-computers-v2";
     const DEFAULT_NAMES = ["Preview Mode"];
+    const WEATHER_CONFIG = {
+      rotationMs: 5000,
+      locations: [
+        { name: "台北", latitude: 25.033, longitude: 121.5654, timezone: "Asia/Taipei" },
+        { name: "台中", latitude: 24.1477, longitude: 120.6736, timezone: "Asia/Taipei" },
+        { name: "高雄", latitude: 22.6273, longitude: 120.3014, timezone: "Asia/Taipei" }
+      ]
+    };
 
     const state = {
       client: null,
@@ -745,7 +1138,10 @@
       configuredNames: loadConfiguredNames(),
       latestByName: new Map(),
       detectedNames: new Set(),
-      historyByName: new Map()
+      historyByName: new Map(),
+      weatherIndex: 0,
+      weatherByName: new Map(),
+      weatherTimer: null
     };
 
     const els = {
@@ -763,7 +1159,12 @@
       saveButton: document.querySelector("#saveButton"),
       connectButton: document.querySelector("#connectButton"),
       disconnectButton: document.querySelector("#disconnectButton"),
-      clearButton: document.querySelector("#clearButton")
+      clearButton: document.querySelector("#clearButton"),
+      weatherTabs: document.querySelector("#weatherTabs"),
+      weatherFields: [...document.querySelectorAll("[data-weather]")].reduce((fields, node) => {
+        fields[node.dataset.weather] = node;
+        return fields;
+      }, {})
     };
 
     function loadConfiguredNames() {
@@ -817,6 +1218,55 @@
         unit += 1;
       }
       return `${value.toFixed(unit < 2 ? 0 : 1)} ${units[unit]}`;
+    }
+
+    function fmtWeatherTemp(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return "--";
+      return Math.round(numeric);
+    }
+
+    function weatherCodeMeta(code) {
+      const numeric = Number(code);
+      if ([0].includes(numeric)) return { icon: "☀️", label: "晴朗" };
+      if ([1, 2].includes(numeric)) return { icon: "🌤️", label: "晴時多雲" };
+      if ([3].includes(numeric)) return { icon: "☁️", label: "多雲" };
+      if ([45, 48].includes(numeric)) return { icon: "🌫️", label: "有霧" };
+      if ([51, 53, 55, 56, 57].includes(numeric)) return { icon: "🌦️", label: "毛毛雨" };
+      if ([61, 63, 65, 66, 67, 80, 81, 82].includes(numeric)) return { icon: "🌧️", label: "降雨" };
+      if ([71, 73, 75, 77, 85, 86].includes(numeric)) return { icon: "❄️", label: "降雪" };
+      if ([95, 96, 99].includes(numeric)) return { icon: "⛈️", label: "雷雨" };
+      return { icon: "☁️", label: "天氣" };
+    }
+
+    function formatTaiwanDate(date = new Date()) {
+      return new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        weekday: "long"
+      }).format(date);
+    }
+
+    function formatTaiwanTime(date = new Date()) {
+      return new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(date);
+    }
+
+    function formatForecastDate(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      return new Intl.DateTimeFormat("zh-TW", {
+        timeZone: "Asia/Taipei",
+        month: "numeric",
+        day: "numeric",
+        weekday: "short"
+      }).format(date).replace("週", "");
     }
 
     function setStatus(kind, text) {
@@ -959,7 +1409,7 @@
     }
 
     function renderPageDots() {
-      const pages = ["Setup", ...state.configuredNames];
+      const pages = ["Setup", ...state.configuredNames, "Smart Weather"];
       els.pageDots.innerHTML = pages.map((label, index) => (
         `<button class="page-dot" data-index="${index}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"></button>`
       )).join("");
@@ -967,6 +1417,115 @@
         button.addEventListener("click", () => scrollToPage(Number(button.dataset.index)));
       });
       updateActiveDot();
+    }
+
+    function renderWeatherTabs() {
+      els.weatherTabs.innerHTML = WEATHER_CONFIG.locations.map((location, index) => (
+        `<button class="weather-tab" data-weather-index="${index}" title="${escapeHtml(location.name)}" aria-label="${escapeHtml(location.name)}"></button>`
+      )).join("");
+      els.weatherTabs.querySelectorAll(".weather-tab").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.weatherIndex = Number(button.dataset.weatherIndex) || 0;
+          renderWeather();
+          scheduleWeatherRotation();
+        });
+      });
+    }
+
+    function updateWeatherTabs() {
+      els.weatherTabs.querySelectorAll(".weather-tab").forEach((tab, index) => {
+        tab.classList.toggle("active", index === state.weatherIndex);
+      });
+    }
+
+    function weatherApiUrl(location) {
+      const params = new URLSearchParams({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        current: "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m",
+        daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+        timezone: location.timezone || "auto",
+        forecast_days: "7"
+      });
+      return `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
+    }
+
+    async function fetchWeather(location) {
+      const response = await fetch(weatherApiUrl(location), { cache: "no-store" });
+      if (!response.ok) throw new Error(`Weather ${response.status}`);
+      return response.json();
+    }
+
+    async function loadWeather() {
+      await Promise.all(WEATHER_CONFIG.locations.map(async (location) => {
+        try {
+          const data = await fetchWeather(location);
+          state.weatherByName.set(location.name, data);
+        } catch (error) {
+          state.weatherByName.set(location.name, { error: error.message });
+        }
+      }));
+      renderWeather();
+    }
+
+    function renderWeather() {
+      const location = WEATHER_CONFIG.locations[state.weatherIndex] || WEATHER_CONFIG.locations[0];
+      const data = state.weatherByName.get(location.name);
+      const current = data?.current || {};
+      const daily = data?.daily || {};
+      const currentMeta = weatherCodeMeta(current.weather_code);
+      const rainToday = daily.precipitation_probability_max?.[0];
+
+      els.weatherFields.city.textContent = location.name;
+      els.weatherFields.mainIcon.textContent = currentMeta.icon;
+      els.weatherFields.temperature.textContent = fmtWeatherTemp(current.temperature_2m);
+      els.weatherFields.summary.textContent = data?.error
+        ? `資料讀取中斷：${data.error}`
+        : `${currentMeta.label} · 體感 ${fmtWeatherTemp(current.apparent_temperature)}°C`;
+      els.weatherFields.humidity.textContent = current.relative_humidity_2m == null ? "--%" : `${Math.round(current.relative_humidity_2m)}%`;
+      els.weatherFields.rain.textContent = rainToday == null ? "--%" : `${Math.round(rainToday)}%`;
+      els.weatherFields.wind.textContent = current.wind_speed_10m == null ? "--" : `${Math.round(current.wind_speed_10m)} km/h`;
+      els.weatherFields.date.textContent = formatTaiwanDate();
+      els.weatherFields.clock.textContent = formatTaiwanTime();
+      els.weatherFields.week.innerHTML = renderWeatherWeek(daily);
+      updateWeatherTabs();
+    }
+
+    function renderWeatherWeek(daily) {
+      const dates = daily.time || [];
+      if (!dates.length) {
+        return Array.from({ length: 7 }).map(() => `
+          <article class="weather-day">
+            <div class="weather-day-date">--</div>
+            <div class="weather-day-icon">☁️</div>
+            <div class="weather-day-temp"><span>--°</span> / <span>--°</span></div>
+            <div class="weather-day-rain">💧 --%</div>
+          </article>
+        `).join("");
+      }
+
+      return dates.slice(0, 7).map((date, index) => {
+        const meta = weatherCodeMeta(daily.weather_code?.[index]);
+        const high = fmtWeatherTemp(daily.temperature_2m_max?.[index]);
+        const low = fmtWeatherTemp(daily.temperature_2m_min?.[index]);
+        const rain = daily.precipitation_probability_max?.[index];
+        return `
+          <article class="weather-day" title="${escapeHtml(meta.label)}">
+            <div class="weather-day-date">${escapeHtml(formatForecastDate(date))}</div>
+            <div class="weather-day-icon">${meta.icon}</div>
+            <div class="weather-day-temp"><span>${high}°</span> / <span>${low}°</span></div>
+            <div class="weather-day-rain">💧 ${rain == null ? "--" : Math.round(rain)}%</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function scheduleWeatherRotation() {
+      if (state.weatherTimer) window.clearInterval(state.weatherTimer);
+      state.weatherTimer = window.setInterval(() => {
+        state.weatherIndex = (state.weatherIndex + 1) % WEATHER_CONFIG.locations.length;
+        renderWeather();
+      }, WEATHER_CONFIG.rotationMs);
     }
 
     function renderDetectedList() {
@@ -1256,7 +1815,16 @@
       nudgeMobileAddressBar();
     });
 
+    renderWeatherTabs();
     renderPages();
+    renderWeather();
+    loadWeather();
+    scheduleWeatherRotation();
+    window.setInterval(() => {
+      els.weatherFields.date.textContent = formatTaiwanDate();
+      els.weatherFields.clock.textContent = formatTaiwanTime();
+    }, 1000);
+    window.setInterval(loadWeather, 30 * 60 * 1000);
     handlePayload({
       computer_name: "Preview Mode",
       timestamp: new Date().toISOString(),
