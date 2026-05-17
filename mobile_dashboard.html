@@ -962,57 +962,252 @@
         width: 76px;
       }
 
+      .weather-page {
+        padding: 6px;
+      }
+
       .weather-shell {
-        height: auto;
-        min-height: calc(100svh - 24px);
-        grid-template-rows: auto auto auto;
-        padding: 10px;
+        height: calc(100svh - 24px);
+        min-height: 0;
+        grid-template-rows: 38px minmax(0, 1fr) 42px;
+        gap: 6px;
+        padding: 7px;
       }
 
       .weather-top {
-        align-items: flex-start;
+        align-items: center;
       }
 
       .weather-brand {
-        font-size: 11px;
-        letter-spacing: 3px;
+        gap: 8px;
+        font-size: 10px;
+        letter-spacing: 2px;
+      }
+
+      .weather-logo {
+        width: 30px;
       }
 
       .weather-location-tabs {
-        max-width: 128px;
+        max-width: 96px;
+        gap: 4px;
+      }
+
+      .weather-tab {
+        width: 24px;
       }
 
       .weather-stage {
-        grid-template-rows: auto auto auto;
+        grid-template-rows: 96px minmax(0, 1fr) 48px;
+        gap: 5px;
       }
 
       .weather-now {
-        padding: 18px 16px 6px;
-        justify-items: center;
+        grid-template-columns: 1fr 70px 1.05fr;
+        align-items: center;
+        align-content: center;
+        gap: 6px;
+        padding: 8px 10px 4px;
+        text-align: left;
+      }
+
+      .weather-city {
+        font-size: clamp(30px, 10vw, 46px);
+      }
+
+      .weather-main-icon {
+        width: 68px;
+        font-size: 46px;
+      }
+
+      .weather-temp-row {
+        justify-content: flex-end;
+        gap: 4px;
+      }
+
+      .weather-temp {
+        font-size: clamp(42px, 14vw, 58px);
+      }
+
+      .weather-temp-unit {
+        font-size: 22px;
+      }
+
+      .weather-feels {
+        grid-column: 1 / -1;
+        font-size: 11px;
+        line-height: 1.1;
         text-align: center;
       }
 
       .weather-week {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        padding: 0 12px 12px;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 3px;
+        padding: 0 4px;
       }
 
       .weather-day {
-        min-height: 132px;
+        min-height: 0;
+        height: 100%;
+        gap: 3px;
+        padding: 5px 2px;
+        clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+      }
+
+      .weather-day-date {
+        font-size: 9px;
+      }
+
+      .weather-day-icon {
+        min-height: 24px;
+        font-size: 22px;
+      }
+
+      .weather-day-temp {
+        font-size: 10px;
+      }
+
+      .weather-day-rain {
+        font-size: 9px;
       }
 
       .weather-side {
         grid-template-columns: repeat(3, 1fr);
-        padding: 0 12px 14px;
+        align-content: center;
+        gap: 4px;
+        padding: 0 8px 6px;
+        font-size: 9px;
+      }
+
+      .weather-side-item {
+        gap: 2px;
+      }
+
+      .weather-side-icon {
+        font-size: 16px;
       }
 
       .weather-bottom {
         gap: 8px;
+        grid-template-columns: 1.08fr 0.92fr 1.16fr;
       }
 
       .weather-bottom-cell {
-        min-height: 40px;
+        min-height: 34px;
+        gap: 4px;
+        padding: 0 4px;
+        font-size: 9px;
+        line-height: 1.12;
+      }
+
+      .weather-bottom-cell strong {
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+
+      .weather-clock {
+        font-size: 15px;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 520px) {
+      .weather-shell {
+        grid-template-rows: 34px minmax(0, 1fr) 40px;
+        gap: 6px;
+        padding: 7px 10px;
+      }
+
+      .weather-brand {
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
+
+      .weather-logo {
+        width: 30px;
+      }
+
+      .weather-stage {
+        grid-template-columns: minmax(120px, 0.72fr) minmax(0, 2.2fr) 42px;
+        gap: 7px;
+      }
+
+      .weather-now {
+        gap: 5px;
+        padding: 8px 4px 8px 12px;
+      }
+
+      .weather-city {
+        font-size: clamp(30px, 8vw, 48px);
+      }
+
+      .weather-main-icon {
+        width: 74px;
+        font-size: 50px;
+      }
+
+      .weather-temp {
+        font-size: clamp(42px, 10vw, 62px);
+      }
+
+      .weather-temp-unit {
+        font-size: 24px;
+      }
+
+      .weather-feels {
+        font-size: 11px;
+      }
+
+      .weather-week {
+        gap: 4px;
+        padding-bottom: 8px;
+      }
+
+      .weather-day {
+        min-height: 118px;
+        gap: 4px;
+        padding: 6px 3px;
+      }
+
+      .weather-day-date {
+        font-size: 10px;
+      }
+
+      .weather-day-icon {
+        min-height: 30px;
+        font-size: 28px;
+      }
+
+      .weather-day-temp {
+        font-size: 12px;
+      }
+
+      .weather-day-rain {
+        font-size: 10px;
+      }
+
+      .weather-side {
+        gap: 8px;
+        padding-right: 6px;
+        font-size: 9px;
+      }
+
+      .weather-side-icon {
+        font-size: 18px;
+      }
+
+      .weather-bottom-cell {
+        min-height: 34px;
+        font-size: 12px;
+      }
+
+      .weather-bottom-cell strong {
         font-size: 14px;
+        letter-spacing: 3px;
+      }
+
+      .weather-clock {
+        font-size: 24px;
       }
     }
   </style>
